@@ -8,6 +8,17 @@ plugins {
 
     id("api-key-provider")
     id("signing-config")
+    id("build-number")
+
+    id("com.github.triplet.play") version "3.0.0"
+}
+
+play {
+    serviceAccountCredentials.set(
+        rootProject.file(properties["never.ending.splendor.publish-key"] ?:"keys/publish-key.json")
+    )
+    track.set("internal")
+    defaultToAppBundles.set(true)
 }
 
 android {
@@ -21,7 +32,7 @@ android {
         val aliasKeyPassword: String by project
 
         val debug by getting {
-            storeFile = file("$rootDir/keystore/debug.keystore")
+            storeFile = file("$rootDir/keys/debug.keystore")
             storePassword = "android"
             keyAlias = "androiddebugkey"
             keyPassword = "android"
@@ -35,10 +46,11 @@ android {
     }
 
     defaultConfig {
+        val buildNumber: String by project
         applicationId = "never.ending.splendor"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 1 // tood auto update
+        versionCode = buildNumber.toInt()
         versionName = "One"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

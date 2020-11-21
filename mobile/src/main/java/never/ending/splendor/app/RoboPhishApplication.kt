@@ -9,6 +9,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.libraries.cast.companionlibrary.cast.CastConfiguration
 import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import nes.networking.CACHE_DIR_TAG
@@ -70,6 +71,8 @@ class RoboPhishApplication : Application(), DIAware {
         bind<PackageValidator>() with singleton {
             PackageValidator(instance())
         }
+
+        bind<FirebaseCrashlytics>() with singleton { FirebaseCrashlytics.getInstance() }
     }
 
     private val appInitializer: AppInitializer by instance()
