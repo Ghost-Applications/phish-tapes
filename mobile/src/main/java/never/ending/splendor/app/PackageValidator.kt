@@ -29,7 +29,84 @@ class PackageValidator(context: Context) {
      * Map allowed callers' certificate keys to the expected caller information.
      *
      */
-    private val mValidCertificates: Map<String, ArrayList<CallerInfo>>
+    private val validCertificates: Map<String, ArrayList<CallerInfo>>
+
+    init {
+        validCertificates = readValidCertificates(
+            context.resources.getXml(
+                R.xml.allowed_media_browser_callers
+            )
+        )
+    }
+
+    /**
+     * @return false if the caller is not authorized to get data from this MediaBrowserService
+     */
+    @SuppressLint("BinaryOperationInTimber", "InlinedApi")
+    fun isCallerAllowed(context: Context, callingPackage: String, callingUid: Int): Boolean {
+        // Always allow calls from the framework, self app or development environment.
+        if (Process.SYSTEM_UID == callingUid || Process.myUid() == callingUid) {
+            return true
+        }
+        val packageManager = context.packageManager
+        val packageInfo: PackageInfo
+        packageInfo = try {
+            packageManager.getPackageInfo(
+                callingPackage, PackageManager.GET_SIGNING_CERTIFICATES
+            )
+        } catch (e: PackageManager.NameNotFoundException) {
+            Timber.w(e, "Package manager can't find package: %s", callingPackage)
+            return false
+        }
+        @Suppress("DEPRECATION") // not available until pi 26
+        if (packageInfo.signatures.size != 1) {
+            Timber.w("Caller has more than one signature certificate!")
+            return false
+        }
+        @Suppress("DEPRECATION") // not available until pi 26
+        val signature = Base64.encodeToString(
+            packageInfo.signatures[0].toByteArray(), Base64.NO_WRAP
+        )
+
+        // Test for known signatures:
+        val validCallers = validCertificates[signature]
+        if (validCallers == null) {
+            Timber.v(
+                "Signature for caller %s is not valid: \n %s",
+                callingPackage, signature
+            )
+            if (validCertificates.isEmpty()) {
+                Timber.w(
+                    "The list of valid certificates is empty. Either your file " +
+                        "res/xml/allowed_media_browser_callers.xml is empty or there was an " +
+                        "error while reading it. Check previous log messages."
+                )
+            }
+            return false
+        }
+
+        // Check if the package name is valid for the certificate:
+        val expectedPackages = StringBuffer()
+        for (info in validCallers) {
+            if (callingPackage == info.packageName) {
+                Timber.v(
+                    "Valid caller: %s package=%s release=%s",
+                    info.name, info.packageName, info.release
+                )
+                return true
+            }
+            expectedPackages.append(info.packageName).append(' ')
+        }
+        Timber.i(
+            """
+    Caller has a valid certificate, but its package doesn't match any expected package for the given certificate. Caller's package is %s . Expected packages as defined in res/xml/allowed_media_browser_callers.xml are (%s). This caller's certificate is:
+    %s
+            """.trimIndent(),
+            callingPackage, expectedPackages, signature
+        )
+        return false
+    }
+
     private fun readValidCertificates(parser: XmlResourceParser): Map<String, ArrayList<CallerInfo>> {
         val validCertificates = HashMap<String, ArrayList<CallerInfo>>()
         try {
@@ -64,81 +141,5 @@ class PackageValidator(context: Context) {
         return validCertificates
     }
 
-    /**
-     * @return false if the caller is not authorized to get data from this MediaBrowserService
-     */
-    @SuppressLint("BinaryOperationInTimber")
-    fun isCallerAllowed(context: Context, callingPackage: String, callingUid: Int): Boolean {
-        // Always allow calls from the framework, self app or development environment.
-        if (Process.SYSTEM_UID == callingUid || Process.myUid() == callingUid) {
-            return true
-        }
-        val packageManager = context.packageManager
-        val packageInfo: PackageInfo
-        packageInfo = try {
-            packageManager.getPackageInfo(
-                callingPackage, PackageManager.GET_SIGNING_CERTIFICATES
-            )
-        } catch (e: PackageManager.NameNotFoundException) {
-            Timber.w(e, "Package manager can't find package: %s", callingPackage)
-            return false
-        }
-        @Suppress("DEPRECATION") // not available until pi 26
-        if (packageInfo.signatures.size != 1) {
-            Timber.w("Caller has more than one signature certificate!")
-            return false
-        }
-        @Suppress("DEPRECATION") // not available until pi 26
-        val signature = Base64.encodeToString(
-            packageInfo.signatures[0].toByteArray(), Base64.NO_WRAP
-        )
-
-        // Test for known signatures:
-        val validCallers = mValidCertificates[signature]
-        if (validCallers == null) {
-            Timber.v(
-                "Signature for caller %s is not valid: \n %s",
-                callingPackage, signature
-            )
-            if (mValidCertificates.isEmpty()) {
-                Timber.w(
-                    "The list of valid certificates is empty. Either your file " +
-                        "res/xml/allowed_media_browser_callers.xml is empty or there was an " +
-                        "error while reading it. Check previous log messages."
-                )
-            }
-            return false
-        }
-
-        // Check if the package name is valid for the certificate:
-        val expectedPackages = StringBuffer()
-        for (info in validCallers) {
-            if (callingPackage == info.packageName) {
-                Timber.v(
-                    "Valid caller: %s package=%s release=%s",
-                    info.name, info.packageName, info.release
-                )
-                return true
-            }
-            expectedPackages.append(info.packageName).append(' ')
-        }
-        Timber.i(
-            """
-    Caller has a valid certificate, but its package doesn't match any expected package for the given certificate. Caller's package is %s . Expected packages as defined in res/xml/allowed_media_browser_callers.xml are (%s). This caller's certificate is:
-    %s
-            """.trimIndent(),
-            callingPackage, expectedPackages, signature
-        )
-        return false
-    }
-
     private class CallerInfo(val name: String, val packageName: String, val release: Boolean)
-
-    init {
-        mValidCertificates = readValidCertificates(
-            context.resources.getXml(
-                R.xml.allowed_media_browser_callers
-            )
-        )
-    }
 }
