@@ -6,8 +6,6 @@ plugins {
 }
 
 subprojects {
-    apply(plugin = "ktlint")
-
     repositories {
         google()
         jcenter()

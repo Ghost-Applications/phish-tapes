@@ -1,8 +1,10 @@
 package never.ending.splendor.app
 
+import timber.log.Timber
+
 /** Release specific initialization things. */
-class ReleaseAppInitializer : AppInitializer {
+class ReleaseAppInitializer(private val crashlyticsTree: CrashlyticsTree) : AppInitializer {
     override fun invoke() {
-        // todo add release specific code here
+        Timber.plant(crashlyticsTree)
     }
 }

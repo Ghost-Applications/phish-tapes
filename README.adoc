@@ -7,9 +7,11 @@ audio.
 
 === Build Scans
 
-= License
 Add to gradle.properties with `systemProp.NEVER_ENDING_SPLENDOR_ACCEPT_BUILD_SCAN_AGREEMENT=yes`
 to enable build scans on every build.
+
+
+= License
 
 ....
 Copyright 2020 Andrew Reitz
