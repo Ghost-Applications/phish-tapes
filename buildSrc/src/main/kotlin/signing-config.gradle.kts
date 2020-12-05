@@ -30,5 +30,5 @@ loadPropertyIntoExtra(
         extraKey = "keystoreLocation",
         projectPropertyKey = "keystoreLocation",
         systemPropertyKey = "KEYSTORE_LOCATION",
-        defaultValue = "$rootDir/keys/debug.keystore"
+        defaultValue = "keys/debug.keystore"
 )

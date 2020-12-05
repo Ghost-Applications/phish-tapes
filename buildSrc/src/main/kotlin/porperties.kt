@@ -21,6 +21,6 @@ internal fun Project.loadPropertyIntoExtra(
 
     extra[extraKey] = when {
         hasProperty(namespacedProjectProperty) -> properties[namespacedProjectProperty]
-        else -> System.getenv(namespacedSystemProperty) ?: defaultValue
+        else -> System.getProperty(namespacedSystemProperty) ?: defaultValue
     }
 }

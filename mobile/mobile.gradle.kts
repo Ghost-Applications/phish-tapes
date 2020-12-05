@@ -32,13 +32,13 @@ android {
         val aliasKeyPassword: String by project
 
         val debug by getting {
-            storeFile = file("$rootDir/keys/debug.keystore")
+            storeFile = rootProject.file("keys/debug.keystore")
             storePassword = "android"
             keyAlias = "androiddebugkey"
             keyPassword = "android"
         }
         create("release") {
-            storeFile = file(keystoreLocation)
+            storeFile = rootProject.file(keystoreLocation)
             storePassword = keystorePassword
             keyAlias = storeKeyAlias
             keyPassword = aliasKeyPassword
@@ -51,7 +51,7 @@ android {
         minSdkVersion(23)
         targetSdkVersion(30)
         versionCode = buildNumber.toInt()
-        versionName = "One"
+        versionName = "About to Run"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

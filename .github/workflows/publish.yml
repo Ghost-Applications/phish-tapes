@@ -19,13 +19,28 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Retrieve Key File
-        run: echo -n $NEVER_ENDING_SPLENDOR_ENCODED_KEY | base64 --decode > ./keys/keystore.jks
+        env:
+          NEVER_ENDING_SPLENDOR_ENCODED_KEY: ${{ secrets.NEVER_ENDING_SPLENDOR_ENCODED_KEY }}
+        run: echo -n $NEVER_ENDING_SPLENDOR_ENCODED_KEY | base64 --decode > ./keys/release.jks
       - name: Provide Publish Key
-        run:  echo $NEVER_ENDING_SPLENDOR_PUBLISH_KEY > keys/publish-key.json
+        env:
+          NEVER_ENDING_SPLENDOR_PUBLISH_KEY: ${{ secrets.NEVER_ENDING_SPLENDOR_PUBLISH_KEY }}
+        run: echo $NEVER_ENDING_SPLENDOR_PUBLISH_KEY > ./keys/publish-key.json
       - name: Build with Gradle
+        env:
+          NEVER_ENDING_SPLENDOR_KEYSTORE_PASSWORD: ${{ secrets.NEVER_ENDING_SPLENDOR_KEYSTORE_PASSWORD }}
+          NEVER_ENDING_SPLENDOR_KEY_ALIAS: ${{ secrets.NEVER_ENDING_SPLENDOR_KEY_ALIAS }}
+          NEVER_ENDING_SPLENDOR_KEY_PASSWORD: ${{ secrets.NEVER_ENDING_SPLENDOR_KEY_PASSWORD }}
+          NEVER_ENDING_SPLENDOR_PHISHIN_API_KEY: ${{ secrets.NEVER_ENDING_SPLENDOR_PHISHIN_API_KEY }}
+          NEVER_ENDING_SPLENDOR_PHISH_NET_API_KEY: ${{ secrets.NEVER_ENDING_SPLENDOR_PHISH_NET_API_KEY }}
         run: >
           ./gradlew build publishRelease --no-daemon
           -DNEVER_ENDING_SPLENDOR_ACCEPT_BUILD_SCAN_AGREEMENT=yes
           -Dorg.gradle.jvmargs="-Xmx4G -Xms1G -XX:+AggressiveOpts -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
-          -DNEVER_ENDING_SPLENDOR_BUILD_NUMBER=BUILD_NUMBER=$GITHUB_RUN_ID
-          -DNEVER_ENDING_SPLENDOR_KEYSTORE_LOCATION=./keys/keystore.jks
+          -Pnever.ending.splendor.buildNumber=$GITHUB_RUN_ID
+          -Pnever.ending.splendor.keystoreLocation=./keys/release.jks
+          -Pnever.ending.splendor.keystorePassword=$NEVER_ENDING_SPLENDOR_KEYSTORE_PASSWORD
+          -Pnever.ending.splendor.aliasKeyPassword=$NEVER_ENDING_SPLENDOR_KEY_PASSWORD
+          -Pnever.ending.splendor.storeKeyAlias=$NEVER_ENDING_SPLENDOR_KEY_ALIAS
+          -Pnever.ending.splendor.phishinApiKey=$NEVER_ENDING_SPLENDOR_PHISHIN_API_KEY
+          -Pnever.ending.splendor.phishNetApiKey=$NEVER_ENDING_SPLENDOR_PHISH_NET_API_KEY
