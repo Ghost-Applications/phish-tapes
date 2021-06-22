@@ -51,7 +51,7 @@ class PlaybackManager(
                     val currentMusic = mQueueManager.currentMusic
                     if (currentMusic != null) {
                         // mServiceCallback.onPlaybackStart();
-                        Timber.d("Queing up next track : %s", currentMusic.description.title)
+                        Timber.d("Queuing up next track : %s", currentMusic.description.title)
                         playback!!.playNext(currentMusic)
                         mGaplessQueued = true
                     }
