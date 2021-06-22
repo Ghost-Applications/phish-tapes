@@ -9,7 +9,7 @@ plugins {
     id("signing-config")
     id("build-number")
 
-    id("com.github.triplet.play") version "3.2.0"
+    id("com.github.triplet.play") version "3.4.0-agp4.2"
 }
 
 play {
@@ -82,10 +82,10 @@ dependencies {
     implementation(project(":networking"))
 
     implementation(kotlin("stdlib"))
-    implementation("androidx.core:core-ktx:1.3.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
+    implementation("androidx.core:core-ktx:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
 
-    implementation("com.google.android.gms:play-services-cast:19.0.0")
+    implementation("com.google.android.gms:play-services-cast:20.0.0")
     implementation("com.google.android.libraries.cast.companionlibrary:ccl:2.9.1")
     implementation("com.google.android.material:material:1.3.0")
 
@@ -93,17 +93,17 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
 
-    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("androidx.appcompat:appcompat:1.3.0")
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.mediarouter:mediarouter:1.2.2")
-    implementation("androidx.media2:media2-session:1.1.2")
-    implementation("androidx.media2:media2-widget:1.1.2")
-    implementation("androidx.media2:media2-player:1.1.2")
+    implementation("androidx.mediarouter:mediarouter:1.2.4")
+    implementation("androidx.media2:media2-session:1.1.3")
+    implementation("androidx.media2:media2-widget:1.1.3")
+    implementation("androidx.media2:media2-player:1.1.3")
 
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
 
-    implementation("org.kodein.di:kodein-di:7.3.1")
-    implementation("org.kodein.di:kodein-di-framework-android-x:7.3.1")
+    implementation("org.kodein.di:kodein-di:7.6.0")
+    implementation("org.kodein.di:kodein-di-framework-android-x:7.6.0")
 
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
@@ -111,7 +111,7 @@ dependencies {
     implementation("com.jakewharton.timber:timber:4.7.1")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.truth:truth:1.1.2")
-    testImplementation("org.mockito:mockito-core:3.7.7")
+    testImplementation("com.google.truth:truth:1.1.3")
+    testImplementation("org.mockito:mockito-core:3.11.1")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 }
