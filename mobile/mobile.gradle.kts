@@ -110,6 +110,14 @@ dependencies {
 
     implementation("com.jakewharton.timber:timber:4.7.1")
 
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
+    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.95.0")
+    debugImplementation("com.facebook.flipper:flipper:0.95.0")
+    debugImplementation("com.facebook.soloader:soloader:0.10.1")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.95.0")
+
+    releaseImplementation("com.facebook.flipper:flipper-noop:0.95.0")
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")
     testImplementation("org.mockito:mockito-core:3.11.1")

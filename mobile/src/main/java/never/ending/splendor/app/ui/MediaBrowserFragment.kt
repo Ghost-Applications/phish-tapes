@@ -300,8 +300,8 @@ class MediaBrowserFragment : Fragment(), DIAware {
         if (mediaBrowser.isConnected && mMediaId != null) {
             mediaBrowser.unsubscribe(mMediaId!!)
         }
-        val controller = (activity as BaseActivity?)?.supportMediaController!!
-        controller.unregisterCallback(mediaControllerCallback)
+        val controller = (activity as BaseActivity?)?.supportMediaController
+        controller?.unregisterCallback(mediaControllerCallback)
     }
 
     override fun onDestroyView() {

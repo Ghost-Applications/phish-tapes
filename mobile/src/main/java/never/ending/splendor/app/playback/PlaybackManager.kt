@@ -33,7 +33,7 @@ class PlaybackManager(
     private val mScheduleFuture: ScheduledFuture<*>
     private val mExecutorService = Executors.newSingleThreadScheduledExecutor()
     private val mHandler = Handler(Looper.getMainLooper())
-    private var mGaplessQueued = false
+    private var gaplessQueued = false
     val mediaSessionCallback: MediaSessionCompat.Callback
         get() = mMediaSessionCallback
     private val mMonitorPositionTask = Runnable { monitorPosition() }
@@ -41,7 +41,7 @@ class PlaybackManager(
         if (playback == null) {
             return
         }
-        if (playback!!.supportsGapless && playback!!.isPlaying && !mGaplessQueued) {
+        if (playback!!.supportsGapless && playback!!.isPlaying && !gaplessQueued) {
             val currentPosition = playback!!.currentStreamPosition / 1000.toLong()
             val duration = mQueueManager.duration / 1000
             val delta = duration - currentPosition
@@ -53,7 +53,7 @@ class PlaybackManager(
                         // mServiceCallback.onPlaybackStart();
                         Timber.d("Queuing up next track : %s", currentMusic.description.title)
                         playback!!.playNext(currentMusic)
-                        mGaplessQueued = true
+                        gaplessQueued = true
                     }
                 } else {
                     handleStopRequest("Cannot skip")
@@ -66,7 +66,7 @@ class PlaybackManager(
      * Handle a request to play music
      */
     fun handlePlayRequest() {
-        mGaplessQueued = false // this was a request from user.  mPlayback.play will cancel gapless
+        gaplessQueued = false // this was a request from user.  mPlayback.play will cancel gapless
         Timber.d("handlePlayRequest: mState=%s", playback!!.state)
         val currentMusic = mQueueManager.currentMusic
         if (currentMusic != null) {
@@ -176,13 +176,14 @@ class PlaybackManager(
      * Implementation of the Playback.Callback interface
      */
     override fun onCompletion() {
+        Timber.d("onCompletion()")
         // The media player finished playing the current song, so we go ahead
         // and start the next.
         when {
-            mGaplessQueued -> {
+            gaplessQueued -> {
                 mServiceCallback.onPlaybackStart()
                 mQueueManager.updateMetadata()
-                mGaplessQueued = false
+                gaplessQueued = false
             }
             mQueueManager.skipQueuePosition(1) -> {
                 handlePlayRequest()
@@ -358,10 +359,10 @@ class PlaybackManager(
     companion object {
         // Action to thumbs up a media item
         private const val CUSTOM_ACTION_THUMBS_UP = "com.example.android.uamp.THUMBS_UP"
-        private const val QUEUE_NEXT_TRACK_TIME: Long =
-            10 // queue next track N seconds before this one ends
-        private const val PROGRESS_UPDATE_INTERNAL: Long = 1000
-        private const val PROGRESS_UPDATE_INITIAL_INTERVAL: Long = 100
+        // queue next track N seconds before this one ends
+        private const val QUEUE_NEXT_TRACK_TIME = 10L
+        private const val PROGRESS_UPDATE_INTERNAL = 1000L
+        private const val PROGRESS_UPDATE_INITIAL_INTERVAL = 100L
     }
 
     init {
