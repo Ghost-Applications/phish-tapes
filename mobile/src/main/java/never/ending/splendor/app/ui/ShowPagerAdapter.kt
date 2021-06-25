@@ -4,19 +4,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import never.ending.splendor.R
+import java.lang.ref.WeakReference
 
 class ShowPagerAdapter(
-    private val mRootView: View
+    rootView: View
 ) : PagerAdapter() {
 
-    override fun instantiateItem(collection: ViewGroup, position: Int): Any {
-        var view: View? = null
-        if (position == 0) view = mRootView.findViewById(R.id.tracks)
-        if (position == 1) view = mRootView.findViewById(R.id.setlist)
-        if (position == 2) view = mRootView.findViewById(R.id.reviews)
-        if (position == 3) view = mRootView.findViewById(R.id.tapernotes)
+    private val _rootView = WeakReference(rootView)
+
+    override fun instantiateItem(collection: ViewGroup, position: Int): View {
+        val rootView = requireNotNull(_rootView.get())
+
+
+        val view: View = when (position) {
+            0 -> rootView.findViewById(R.id.tracks)
+            1 -> rootView.findViewById(R.id.setlist)
+            2 -> rootView.findViewById(R.id.reviews)
+            3 -> rootView.findViewById(R.id.tapernotes)
+            else -> error("Unknown position")
+        }
+
         collection.addView(view)
-        return view!!
+        return view
     }
 
     override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
@@ -31,13 +40,11 @@ class ShowPagerAdapter(
         return view === `object`
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
-        when (position) {
-            0 -> return "Tracks"
-            1 -> return "Setlist"
-            2 -> return "Reviews"
-            3 -> return "Taper Notes"
-        }
-        return null
+    override fun getPageTitle(position: Int): CharSequence = when (position) {
+        0 -> "Tracks"
+        1 -> "Setlist"
+        2 -> "Reviews"
+        3 -> "Taper Notes"
+        else -> error("Unknown position")
     }
 }
