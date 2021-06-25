@@ -3,6 +3,7 @@ package never.ending.splendor.app
 import android.app.Application
 import com.facebook.flipper.android.AndroidFlipperClient
 import com.facebook.flipper.android.utils.FlipperUtils
+import com.facebook.flipper.plugins.crashreporter.CrashReporterPlugin
 import com.facebook.flipper.plugins.databases.DatabasesFlipperPlugin
 import com.facebook.flipper.plugins.inspector.DescriptorMapping
 import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
@@ -35,6 +36,7 @@ class DebugAppInitializer(
             client.addPlugin(DatabasesFlipperPlugin(context))
             client.addPlugin(SharedPreferencesFlipperPlugin(context))
             client.addPlugin(LeakCanary2FlipperPlugin())
+            client.addPlugin(CrashReporterPlugin.getInstance())
             client.start()
         }
     }

@@ -218,9 +218,9 @@ class MusicService : MediaBrowserServiceCompat(), PlaybackServiceCallback, DIAwa
         registerCarConnectionReceiver()
     }
 
-    override fun onStartCommand(startIntent: Intent, flags: Int, startId: Int): Int {
-        val action = startIntent.action
-        val command = startIntent.getStringExtra(CMD_NAME)
+    override fun onStartCommand(startIntent: Intent?, flags: Int, startId: Int): Int {
+        val action = startIntent?.action
+        val command = startIntent?.getStringExtra(CMD_NAME)
         if (ACTION_CMD == action) {
             if (CMD_PAUSE == command) {
                 playbackManager!!.handlePauseRequest()
@@ -254,7 +254,7 @@ class MusicService : MediaBrowserServiceCompat(), PlaybackServiceCallback, DIAwa
         clientPackageName: String,
         clientUid: Int,
         rootHints: Bundle?
-    ): BrowserRoot? {
+    ): BrowserRoot {
         Timber.d(
             "OnGetRoot: clientPackageName=%s clientUid=%s rootHints=%s",
             clientPackageName, clientUid, rootHints

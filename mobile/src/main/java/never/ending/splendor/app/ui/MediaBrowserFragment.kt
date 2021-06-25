@@ -155,7 +155,7 @@ class MediaBrowserFragment : Fragment(), DIAware {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         Timber.d("fragment.onCreateView")
         foreground = MainScope()
 

@@ -120,6 +120,7 @@ class LocalPlayback(
     }
 
     override fun playNext(item: MediaSessionCompat.QueueItem): Boolean {
+        Timber.d("playNext() item=%s", item)
         val nextPlayer: MediaPlayer =
             if (mediaPlayer === mediaPlayerA) mediaPlayerB
             else mediaPlayerA
