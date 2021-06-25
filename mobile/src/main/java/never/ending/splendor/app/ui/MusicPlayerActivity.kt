@@ -32,7 +32,7 @@ class MusicPlayerActivity : BaseActivity(), MediaFragmentListener {
         setContentView(binding.root)
 
         initializeToolbar(binding.toolbarContainer.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         initializeFromParams(savedInstanceState, intent)
 
@@ -81,7 +81,13 @@ class MusicPlayerActivity : BaseActivity(), MediaFragmentListener {
     override fun setToolbarTitle(title: CharSequence) {
         Timber.d("Setting toolbar title to %s", title)
 
-        val titleToSet = if (title.isEmpty()) getString(R.string.app_name) else title
+        val titleToSet = if (title.isEmpty()) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            getString(R.string.app_name)
+        } else {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            title
+        }
         setTitle(titleToSet)
     }
 
