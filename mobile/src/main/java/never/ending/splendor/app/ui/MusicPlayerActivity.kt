@@ -162,7 +162,7 @@ class MusicPlayerActivity : BaseActivity(), MediaFragmentListener {
     ) {
         Timber.d("navigateToBrowser, mediaId=%s", mediaId)
         var fragment = browseFragment
-        if (fragment == null || !TextUtils.equals(fragment.mediaId, mediaId)) {
+        if (fragment == null || fragment.mediaId != mediaId) {
             fragment = MediaBrowserFragment()
             fragment.setMediaId(title, subtitle, mediaId)
             val transaction = supportFragmentManager.beginTransaction()

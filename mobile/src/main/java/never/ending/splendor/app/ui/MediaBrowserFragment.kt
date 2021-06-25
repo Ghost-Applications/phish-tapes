@@ -32,7 +32,7 @@ import never.ending.splendor.databinding.FragmentListBinding
 import never.ending.splendor.databinding.FragmentListShowBinding
 import org.kodein.di.DI
 import org.kodein.di.DIAware
-import org.kodein.di.android.x.di
+import org.kodein.di.android.x.closestDI
 import org.kodein.di.instance
 import timber.log.Timber
 
@@ -49,20 +49,10 @@ class MediaBrowserFragment : Fragment(), DIAware {
 
     private lateinit var foreground: CoroutineScope
 
-    override val di: DI by di()
+    override val di: DI by closestDI()
 
     private val phishNetRepository: PhishNetRepository by instance()
     private val phishInRepository: PhishInRepository by instance()
-
-    private val browserAdapter: MediaBrowserAdapter by lazy {
-        MediaBrowserAdapter(
-            requireActivity(),
-            MediaControllerCompat.getMediaController(requireActivity())
-        ) { item ->
-            checkForUserVisibleErrors(false)
-            mediaFragmentListener.onMediaItemSelected(item)
-        }
-    }
 
     private var _fragmentListBinding: FragmentListBinding? = null
     private val fragmentListBinding get() = requireNotNull(_fragmentListBinding)
@@ -112,7 +102,7 @@ class MediaBrowserFragment : Fragment(), DIAware {
                     "Received metadata change to media %s",
                     metadata.description.mediaId
                 )
-                browserAdapter.notifyDataSetChanged()
+                listView.adapter?.notifyDataSetChanged()
                 progressBar.visibility =
                     View.INVISIBLE // hide progress bar when we receive metadata
             }
@@ -121,7 +111,7 @@ class MediaBrowserFragment : Fragment(), DIAware {
                 super.onPlaybackStateChanged(state)
                 Timber.d("Received state change: %s", state)
                 checkForUserVisibleErrors(false)
-                browserAdapter.notifyDataSetChanged()
+                listView.adapter?.notifyDataSetChanged()
             }
         }
 
@@ -138,7 +128,7 @@ class MediaBrowserFragment : Fragment(), DIAware {
                     )
                     checkForUserVisibleErrors(children.isEmpty())
                     progressBar.visibility = View.INVISIBLE
-                    browserAdapter.media = children
+                    (listView.adapter as? MediaBrowserAdapter)?.media = children
                 } catch (t: Throwable) {
                     Timber.e(t, "Error on childrenloaded")
                 }
@@ -255,7 +245,6 @@ class MediaBrowserFragment : Fragment(), DIAware {
                         )
                     }
                 }
-                // todo load tapper notes
             }
 
             fragmentListShowBinding.root
@@ -268,7 +257,13 @@ class MediaBrowserFragment : Fragment(), DIAware {
 
         val layoutManager = LinearLayoutManager(context)
         listView.layoutManager = LinearLayoutManager(context)
-        listView.adapter = browserAdapter
+        listView.adapter = MediaBrowserAdapter(
+            requireActivity(),
+            MediaControllerCompat.getMediaController(requireActivity())
+        ) { item ->
+            checkForUserVisibleErrors(false)
+            mediaFragmentListener.onMediaItemSelected(item)
+        }
 
         val dividerItemDecoration = DividerItemDecoration(
             listView.context,
