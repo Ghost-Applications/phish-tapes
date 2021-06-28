@@ -102,6 +102,7 @@ class MediaNotificationManager(
      * destroyed before [.stopNotification] is called.
      */
     suspend fun startNotification() {
+        Timber.d("startNotification()")
         if (!mStarted) {
             mMetadata = controller!!.metadata
             mPlaybackState = controller!!.playbackState
@@ -127,6 +128,7 @@ class MediaNotificationManager(
      * was destroyed this has no effect.
      */
     fun stopNotification() {
+        Timber.d("stopNotification()")
         if (mStarted) {
             mStarted = false
             controller!!.unregisterCallback(mCb)
@@ -134,12 +136,14 @@ class MediaNotificationManager(
                 notificationManagerCompat.cancel(NOTIFICATION_ID)
                 musicService.unregisterReceiver(this)
             } catch (ex: IllegalArgumentException) { // ignore if the receiver is not registered.
+                Timber.e(ex, "stop notification error")
             }
             musicService.stopForeground(true)
         }
     }
 
     override fun onReceive(context: Context, intent: Intent) {
+        Timber.d("onReceive() intent=%s", intent)
         val action = intent.action
         Timber.d("Received intent with action %s", action)
         when (action) {
@@ -163,6 +167,7 @@ class MediaNotificationManager(
      * (see [android.media.session.MediaController.Callback.onSessionDestroyed])
      */
     private fun updateSessionToken() {
+        Timber.d("updateSessionToken()")
         val freshToken = musicService.sessionToken
         if (sessionToken == null && freshToken != null ||
             sessionToken != null && sessionToken != freshToken
@@ -240,7 +245,7 @@ class MediaNotificationManager(
         if (mMetadata == null || mPlaybackState == null) {
             return null
         }
-        val notificationBuilder = NotificationCompat.Builder(musicService, "RoboPhish")
+        val notificationBuilder = NotificationCompat.Builder(musicService, MEDIA_PLAYER_NOTIFICATION)
         var playPauseButtonPosition = 0
         // If skip to previous action is enabled
         if (mPlaybackState!!.actions and PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS != 0L) {
@@ -288,14 +293,17 @@ class MediaNotificationManager(
                     }
             }
 
-            job.cancelAndJoin()
+            job.join()
         }
         notificationBuilder
             .setStyle(
-                androidx.media.app.NotificationCompat.MediaStyle()
-                    .setShowActionsInCompactView(playPauseButtonPosition)
-                    // show only play/pause in compact view
-                    .setMediaSession(sessionToken)
+                androidx.media.app.NotificationCompat.MediaStyle().run {
+                    if (playPauseButtonPosition == 1) {
+                        setShowActionsInCompactView(0, 1, 2)
+                    } else {
+                        setShowActionsInCompactView(0)
+                    }
+                }.setMediaSession(sessionToken)
             )
             .setColor(notificationColor)
             .setSmallIcon(R.drawable.ic_notification)

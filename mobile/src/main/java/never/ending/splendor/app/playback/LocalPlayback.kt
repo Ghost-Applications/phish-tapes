@@ -10,10 +10,12 @@ import android.media.AudioManager.OnAudioFocusChangeListener
 import android.media.MediaPlayer
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiManager.WifiLock
+import android.os.Build
 import android.os.PowerManager
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.text.TextUtils
+import never.ending.splendor.BuildConfig
 import never.ending.splendor.app.MusicService
 import never.ending.splendor.app.model.MusicProvider
 import never.ending.splendor.app.model.MusicProviderSource
@@ -394,13 +396,23 @@ class LocalPlayback(
      * reset the media player
      */
     override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
-        Timber.e("Media player error: what=%s extra=%s", what, extra)
+        val logError = """"Media player error: what=%s extra=%s"
+            TrackInfo=%s
+            DrmInfo=%s
+            Metrics=%s
+            MediaPlayer=%s
+        """.trimIndent()
+        Timber.e(logError, what, extra, runCatching { mp.trackInfo }.getOrNull(),
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) runCatching { mp.drmInfo } else "",
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) runCatching { mp.metrics } else "",
+            mp
+        )
         callback.onError("MediaPlayer error $what ($extra)")
-        return true // true indicates we handled the error
+        mp.reset()
+        return true
     }
 
     private fun createMediaPlayerIfNeeded() {
-        // todo clean this up...
         mediaPlayerA = createMediaPlayer(if (this::mediaPlayerA.isInitialized) mediaPlayerA else null)
         mediaPlayerB = createMediaPlayer(if (this::mediaPlayerB.isInitialized) mediaPlayerB else null)
         if (_mediaPlayer == null) _mediaPlayer = mediaPlayerA

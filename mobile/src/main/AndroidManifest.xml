@@ -85,6 +85,7 @@
         <service
             android:name="never.ending.splendor.app.MusicService"
             android:exported="true"
+            android:label="@string/app_name"
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />

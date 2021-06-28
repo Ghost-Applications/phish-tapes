@@ -23,6 +23,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import nes.networking.phishin.PhishInRepository
 import nes.networking.phishnet.PhishNetRepository
+import nes.networking.retry
 import never.ending.splendor.R
 import never.ending.splendor.app.utils.MediaIdHelper
 import never.ending.splendor.app.utils.MediaIdHelper.extractShowFromMediaID
@@ -162,12 +163,14 @@ class MediaBrowserFragment : Fragment(), DIAware {
                 slidingTabs.setupWithViewPager(viewpager)
                 foreground.launch {
                     // todo better way to get show date.
-                    val setlistResult = phishNetRepository.setlist(
-                        requireNotNull(subTitle).replace(
-                            ".",
-                            "-"
+                    val setlistResult = retry {
+                        phishNetRepository.setlist(
+                            requireNotNull(subTitle).replace(
+                                ".",
+                                "-"
+                            )
                         )
-                    )
+                    }
 
                     when (setlistResult) {
                         is Success -> {
@@ -190,7 +193,7 @@ class MediaBrowserFragment : Fragment(), DIAware {
 
                             when (
                                 val reviewsResult =
-                                    phishNetRepository.reviews(showid.toString())
+                                    retry { phishNetRepository.reviews(showid.toString()) }
                             ) {
                                 is Success -> {
                                     val display = StringBuilder()

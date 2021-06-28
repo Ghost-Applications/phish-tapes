@@ -22,6 +22,7 @@ class PhishProviderSource(
                 Timber.e(result.reason, "There was an error loading years from phishin api")
                 emptyList()
             }
+            else -> error("Getting AS to shut up. This shouldn't happen")
         }
 
     override suspend fun showsInYear(year: String): List<MediaMetadataCompat> {
@@ -47,11 +48,12 @@ class PhishProviderSource(
                 )
                 emptyList()
             }
+            else -> error("Getting AS to shut up. This shouldn't happen")
         }
     }
 
     override suspend fun tracksInShow(showId: String): List<MediaMetadataCompat> {
-        return when (val result = phishinRepository.show(showId)) {
+        return when (val result = retry { phishinRepository.show(showId) }) {
             is Success -> {
                 result.value.let { show ->
                     result.value.tracks.map { track ->
@@ -76,13 +78,14 @@ class PhishProviderSource(
                                 MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE,
                                 track.formatedDuration
                             )
+                            .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, track.duration)
                             .putString(
                                 MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION,
                                 show.date.toSimpleFormat()
                             )
                             .putString(
                                 MediaMetadataCompat.METADATA_KEY_ARTIST,
-                                track.duration.toString()
+                                "Phish"
                             )
                             .putString(
                                 MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI,
@@ -100,6 +103,7 @@ class PhishProviderSource(
                 )
                 emptyList()
             }
+            else -> error("Getting AS to shut up. This shouldn't happen")
         }
     }
 

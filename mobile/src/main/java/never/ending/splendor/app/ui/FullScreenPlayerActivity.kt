@@ -24,6 +24,7 @@ import never.ending.splendor.app.MusicService
 import never.ending.splendor.databinding.ActivityFullPlayerBinding
 import org.kodein.di.DI
 import org.kodein.di.DIAware
+import org.kodein.di.android.closestDI
 import org.kodein.di.android.di
 import org.kodein.di.instance
 import timber.log.Timber
@@ -37,7 +38,7 @@ import java.util.concurrent.TimeUnit
  */
 class FullScreenPlayerActivity : ActionBarCastActivity(), DIAware {
 
-    override val di: DI by di()
+    override val di: DI by closestDI()
 
     private val pauseDrawable: Drawable by lazy {
         requireNotNull(ContextCompat.getDrawable(this, R.drawable.uamp_ic_pause_white_48dp))
@@ -201,6 +202,7 @@ class FullScreenPlayerActivity : ActionBarCastActivity(), DIAware {
 
     public override fun onStop() {
         super.onStop()
+        Timber.d("onStop() (disconnecting mediaBrowser)")
         if (mMediaBrowser != null) {
             mMediaBrowser!!.disconnect()
         }
