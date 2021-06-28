@@ -6,7 +6,7 @@ import okhttp3.Request
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
 class PhishinAuthInterceptorTest {
 

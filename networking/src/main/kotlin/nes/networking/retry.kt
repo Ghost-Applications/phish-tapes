@@ -8,7 +8,7 @@ suspend fun <T> retry(
 ): Result<T, Exception> {
     repeat(2) {
         when (val result = block()) {
-            is Success -> return result
+            is Success -> return@retry result
         }
     }
     return block() // last attempt

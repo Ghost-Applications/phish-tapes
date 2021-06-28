@@ -76,10 +76,15 @@ abstract class BaseActivity : ActionBarCastActivity(), MediaBrowserProvider {
 
     override fun onStop() {
         super.onStop()
-        Timber.d("Activity onStop")
+        Timber.d("Activity onStop (disconnecting mediaBrowser)")
         val mediaController = MediaControllerCompat.getMediaController(this)
         mediaController?.unregisterCallback(mMediaControllerCallback)
         mediaBrowser.disconnect()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Timber.d("onDestroy()")
     }
 
     protected open fun onMediaControllerConnected() {

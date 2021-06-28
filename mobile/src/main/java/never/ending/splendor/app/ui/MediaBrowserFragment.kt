@@ -23,6 +23,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import nes.networking.phishin.PhishInRepository
 import nes.networking.phishnet.PhishNetRepository
+import nes.networking.retry
 import never.ending.splendor.R
 import never.ending.splendor.app.utils.MediaIdHelper
 import never.ending.splendor.app.utils.MediaIdHelper.extractShowFromMediaID
@@ -32,7 +33,7 @@ import never.ending.splendor.databinding.FragmentListBinding
 import never.ending.splendor.databinding.FragmentListShowBinding
 import org.kodein.di.DI
 import org.kodein.di.DIAware
-import org.kodein.di.android.x.di
+import org.kodein.di.android.x.closestDI
 import org.kodein.di.instance
 import timber.log.Timber
 
@@ -49,20 +50,10 @@ class MediaBrowserFragment : Fragment(), DIAware {
 
     private lateinit var foreground: CoroutineScope
 
-    override val di: DI by di()
+    override val di: DI by closestDI()
 
     private val phishNetRepository: PhishNetRepository by instance()
     private val phishInRepository: PhishInRepository by instance()
-
-    private val browserAdapter: MediaBrowserAdapter by lazy {
-        MediaBrowserAdapter(
-            requireActivity(),
-            MediaControllerCompat.getMediaController(requireActivity())
-        ) { item ->
-            checkForUserVisibleErrors(false)
-            mediaFragmentListener.onMediaItemSelected(item)
-        }
-    }
 
     private var _fragmentListBinding: FragmentListBinding? = null
     private val fragmentListBinding get() = requireNotNull(_fragmentListBinding)
@@ -112,7 +103,7 @@ class MediaBrowserFragment : Fragment(), DIAware {
                     "Received metadata change to media %s",
                     metadata.description.mediaId
                 )
-                browserAdapter.notifyDataSetChanged()
+                listView.adapter?.notifyDataSetChanged()
                 progressBar.visibility =
                     View.INVISIBLE // hide progress bar when we receive metadata
             }
@@ -121,7 +112,7 @@ class MediaBrowserFragment : Fragment(), DIAware {
                 super.onPlaybackStateChanged(state)
                 Timber.d("Received state change: %s", state)
                 checkForUserVisibleErrors(false)
-                browserAdapter.notifyDataSetChanged()
+                listView.adapter?.notifyDataSetChanged()
             }
         }
 
@@ -138,7 +129,7 @@ class MediaBrowserFragment : Fragment(), DIAware {
                     )
                     checkForUserVisibleErrors(children.isEmpty())
                     progressBar.visibility = View.INVISIBLE
-                    browserAdapter.media = children
+                    (listView.adapter as? MediaBrowserAdapter)?.media = children
                 } catch (t: Throwable) {
                     Timber.e(t, "Error on childrenloaded")
                 }
@@ -155,7 +146,7 @@ class MediaBrowserFragment : Fragment(), DIAware {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         Timber.d("fragment.onCreateView")
         foreground = MainScope()
 
@@ -172,12 +163,14 @@ class MediaBrowserFragment : Fragment(), DIAware {
                 slidingTabs.setupWithViewPager(viewpager)
                 foreground.launch {
                     // todo better way to get show date.
-                    val setlistResult = phishNetRepository.setlist(
-                        requireNotNull(subTitle).replace(
-                            ".",
-                            "-"
+                    val setlistResult = retry {
+                        phishNetRepository.setlist(
+                            requireNotNull(subTitle).replace(
+                                ".",
+                                "-"
+                            )
                         )
-                    )
+                    }
 
                     when (setlistResult) {
                         is Success -> {
@@ -200,7 +193,7 @@ class MediaBrowserFragment : Fragment(), DIAware {
 
                             when (
                                 val reviewsResult =
-                                    phishNetRepository.reviews(showid.toString())
+                                    retry { phishNetRepository.reviews(showid.toString()) }
                             ) {
                                 is Success -> {
                                     val display = StringBuilder()
@@ -255,7 +248,6 @@ class MediaBrowserFragment : Fragment(), DIAware {
                         )
                     }
                 }
-                // todo load tapper notes
             }
 
             fragmentListShowBinding.root
@@ -268,7 +260,13 @@ class MediaBrowserFragment : Fragment(), DIAware {
 
         val layoutManager = LinearLayoutManager(context)
         listView.layoutManager = LinearLayoutManager(context)
-        listView.adapter = browserAdapter
+        listView.adapter = MediaBrowserAdapter(
+            requireActivity(),
+            MediaControllerCompat.getMediaController(requireActivity())
+        ) { item ->
+            checkForUserVisibleErrors(false)
+            mediaFragmentListener.onMediaItemSelected(item)
+        }
 
         val dividerItemDecoration = DividerItemDecoration(
             listView.context,
@@ -300,8 +298,8 @@ class MediaBrowserFragment : Fragment(), DIAware {
         if (mediaBrowser.isConnected && mMediaId != null) {
             mediaBrowser.unsubscribe(mMediaId!!)
         }
-        val controller = (activity as BaseActivity?)?.supportMediaController!!
-        controller.unregisterCallback(mediaControllerCallback)
+        val controller = (activity as BaseActivity?)?.supportMediaController
+        controller?.unregisterCallback(mediaControllerCallback)
     }
 
     override fun onDestroyView() {

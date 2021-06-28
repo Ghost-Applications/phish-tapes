@@ -30,12 +30,15 @@ class QueueManager(
     private var playingQueue: List<MediaSessionCompat.QueueItem>
 
     private var currentIndex: Int = 0
+
+    private var currentIndexWithMetaDataListener: Int
+    get() = currentIndex
         set(value) {
-            if (value >= 0 && value < playingQueue.size) {
-                field = value
-                metadataUpdateListener.onCurrentQueueIndexUpdated(currentIndex)
-            }
+        if (value >= 0 && value < playingQueue.size) {
+            currentIndex = value
+            metadataUpdateListener.onCurrentQueueIndexUpdated(currentIndex)
         }
+    }
 
     private fun isSameBrowsingCategory(mediaId: String): Boolean {
         val newBrowseHierarchy = MediaIdHelper.getHierarchy(mediaId)
@@ -49,14 +52,14 @@ class QueueManager(
     fun setCurrentQueueItem(queueId: Long): Boolean {
         // set the current index on queue from the queue Id:
         val index = QueueHelper.getMusicIndexOnQueue(playingQueue, queueId)
-        currentIndex = index
+        currentIndexWithMetaDataListener = index
         return index >= 0
     }
 
     private fun setCurrentQueueItem(mediaId: String): Boolean {
         // set the current index on queue from the music Id:
         val index = QueueHelper.getMusicIndexOnQueue(playingQueue, mediaId)
-        currentIndex = index
+        currentIndexWithMetaDataListener = index
         return index >= 0
     }
 

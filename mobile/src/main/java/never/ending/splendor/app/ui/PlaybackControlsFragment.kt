@@ -167,11 +167,11 @@ class PlaybackControlsFragment : Fragment(), DIAware {
         }
         if (enablePlay) {
             binding.playPause.setImageDrawable(
-                ContextCompat.getDrawable(activity!!, R.drawable.ic_play_arrow_black_36dp)
+                ContextCompat.getDrawable(requireActivity(), R.drawable.ic_play_arrow_black_36dp)
             )
         } else {
             binding.playPause.setImageDrawable(
-                ContextCompat.getDrawable(activity!!, R.drawable.ic_pause_black_36dp)
+                ContextCompat.getDrawable(requireActivity(), R.drawable.ic_pause_black_36dp)
             )
         }
         val controller = (activity as BaseActivity?)?.supportMediaController

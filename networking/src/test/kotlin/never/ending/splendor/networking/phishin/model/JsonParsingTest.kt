@@ -5,10 +5,10 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import nes.networking.networkingModule
-import org.junit.jupiter.api.Test
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance
+import kotlin.test.Test
 
 /**
  * Test to ensure the models match what we expect from the [robophish.PhishinService], and
