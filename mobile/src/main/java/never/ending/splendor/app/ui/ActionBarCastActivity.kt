@@ -14,7 +14,7 @@ import com.google.android.libraries.cast.companionlibrary.widgets.IntroductoryOv
 import never.ending.splendor.R
 import org.kodein.di.DI
 import org.kodein.di.DIAware
-import org.kodein.di.android.di
+import org.kodein.di.android.closestDI
 import org.kodein.di.instance
 import timber.log.Timber
 
@@ -30,7 +30,7 @@ import timber.log.Timber
  */
 abstract class ActionBarCastActivity : AppCompatActivity(), DIAware {
 
-    override val di: DI by di()
+    override val di: DI by closestDI()
 
     private val castManager: VideoCastManager by instance()
 

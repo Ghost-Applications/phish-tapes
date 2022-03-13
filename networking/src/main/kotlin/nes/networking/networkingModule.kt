@@ -11,8 +11,8 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import org.kodein.di.DI
 import org.kodein.di.bind
+import org.kodein.di.bindSet
 import org.kodein.di.instance
-import org.kodein.di.setBinding
 import org.kodein.di.singleton
 import java.io.File
 import java.util.Date
@@ -43,5 +43,5 @@ val networkingModule = DI.Module(name = "NetworkingModule") {
             .build()
     }
 
-    bind() from setBinding<Interceptor>()
+    bindSet<Interceptor>()
 }

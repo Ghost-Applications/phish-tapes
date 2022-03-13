@@ -19,10 +19,15 @@ import never.ending.splendor.app.model.MusicProvider
 import never.ending.splendor.app.model.MusicProviderSource
 import never.ending.splendor.app.model.PhishProviderSource
 import never.ending.splendor.app.ui.FullScreenPlayerActivity
+import never.ending.splendor.app.utils.Images
 import okhttp3.OkHttpClient
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.DIAware
 import org.kodein.di.android.androidCoreModule
 import org.kodein.di.android.x.androidXModule
+import org.kodein.di.bind
+import org.kodein.di.instance
+import org.kodein.di.singleton
 import timber.log.Timber
 import java.io.File
 
@@ -53,7 +58,9 @@ class NeverEndingSplendorApplication : Application(), DIAware {
         bind<File>(tag = CACHE_DIR_TAG) with singleton { instance<Context>().cacheDir }
 
         bind<MusicProvider>() with singleton { MusicProvider(instance(), instance()) }
-        bind<MusicProviderSource>() with singleton { PhishProviderSource(instance(), instance()) }
+        bind<MusicProviderSource>() with singleton { PhishProviderSource(instance(), instance(), instance()) }
+
+        bind<Images>() with singleton { Images(instance()) }
 
         bind<Picasso>() with singleton {
             Picasso.Builder(instance())

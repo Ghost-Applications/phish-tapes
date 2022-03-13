@@ -19,7 +19,7 @@ class CrashlyticsTree(private val crashlytics: FirebaseCrashlytics) : Timber.Tre
         crashlytics.setCustomKey(CRASHLYTICS_KEY_MESSAGE, message)
 
         if (t == null) {
-            crashlytics.log(message )
+            crashlytics.log(message)
         } else {
             crashlytics.recordException(t)
         }

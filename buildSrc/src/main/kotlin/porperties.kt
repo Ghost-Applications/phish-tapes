@@ -11,10 +11,10 @@ internal const val systemNamespace = "NEVER_ENDING_SPLENDOR"
  * @see [ProjectProperties](https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties)
  */
 internal fun Project.loadPropertyIntoExtra(
-        extraKey: String,
-        projectPropertyKey: String,
-        systemPropertyKey: String,
-        defaultValue: String
+    extraKey: String,
+    projectPropertyKey: String,
+    systemPropertyKey: String,
+    defaultValue: String
 ) {
     val namespacedProjectProperty = "$projectNamespace.$projectPropertyKey"
     val namespacedSystemProperty = "${systemNamespace}_$systemPropertyKey"

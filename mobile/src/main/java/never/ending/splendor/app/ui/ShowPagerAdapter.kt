@@ -15,7 +15,6 @@ class ShowPagerAdapter(
     override fun instantiateItem(collection: ViewGroup, position: Int): View {
         val rootView = requireNotNull(_rootView.get())
 
-
         val view: View = when (position) {
             0 -> rootView.findViewById(R.id.tracks)
             1 -> rootView.findViewById(R.id.setlist)
