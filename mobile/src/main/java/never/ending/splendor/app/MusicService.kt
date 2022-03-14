@@ -179,7 +179,7 @@ class MusicService : MediaBrowserServiceCompat(), PlaybackServiceCallback, DIAwa
             applicationContext,
             PENDING_INTENT_REQUEST_COST,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         session.setSessionActivity(pi)
 
