@@ -18,7 +18,7 @@ import never.ending.splendor.app.MusicService
 import never.ending.splendor.databinding.FragmentPlaybackControlsBinding
 import org.kodein.di.DI
 import org.kodein.di.DIAware
-import org.kodein.di.android.x.di
+import org.kodein.di.android.x.closestDI
 import org.kodein.di.instance
 import timber.log.Timber
 
@@ -27,7 +27,7 @@ import timber.log.Timber
  */
 class PlaybackControlsFragment : Fragment(), DIAware {
 
-    override val di: DI by di()
+    override val di: DI by closestDI()
 
     private var _binding: FragmentPlaybackControlsBinding? = null
     private val binding get() = _binding!!

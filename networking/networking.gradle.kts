@@ -20,31 +20,25 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     // api to expose networkingModule.kt to consumers
-    api("org.kodein.di:kodein-di:7.6.0")
+    api(libs.kodein)
 
     // api to expose Interceptors and HttpUrl to consumers
-    api("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+    api(libs.okhttp)
 
-    api("dev.forkhandles:result4k:1.10.0.0")
+    api(libs.result4k)
 
-    implementation("com.jakewharton.byteunits:byteunits:0.9.1")
+    implementation(libs.byteunits)
 
-    implementation("com.squareup.okio:okio:2.10.0")
+    implementation(libs.okio)
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation(libs.bundles.retrofit)
 
-    implementation("com.squareup.moshi:moshi:1.12.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
-    implementation("com.squareup.moshi:moshi-adapters:1.12.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.12.0")
+    implementation(libs.bundles.moshi)
+    kapt(libs.moshi.codegen)
 
     testImplementation(kotlin("test"))
-    testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0")
-    testImplementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
-
+    testImplementation(kotlin("reflect"))
+    testImplementation(libs.bundles.network.test.libs)
 }
 
 kotlinConfigWriter {

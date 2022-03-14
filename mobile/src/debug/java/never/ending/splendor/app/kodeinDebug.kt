@@ -4,7 +4,12 @@ import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
-import org.kodein.di.*
+import org.kodein.di.DI
+import org.kodein.di.DI.Module
+import org.kodein.di.bind
+import org.kodein.di.inSet
+import org.kodein.di.instance
+import org.kodein.di.singleton
 import timber.log.Timber
 
 val debugModule = DI.Module("Debug Module") {

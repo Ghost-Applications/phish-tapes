@@ -3,9 +3,9 @@ package never.ending.splendor.app
 import android.os.Bundle
 import android.provider.MediaStore
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.Test
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
 class VoiceSearchParamsTest {
     @Test fun `on empty query`() {

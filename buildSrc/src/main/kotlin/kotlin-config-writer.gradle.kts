@@ -1,6 +1,6 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import nes.gradle.KotlinConfigWriterExtension
 import nes.gradle.KotlinConfigWriterTask
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 
 plugins {
     kotlin("jvm")
@@ -19,7 +19,7 @@ val generateConfigTask = tasks.create<KotlinConfigWriterTask>("generateKotlinCon
     packageName = extension.packageName
     keyValuePairs = extension.keys
     kotlinConfigFile = outputDirectory.also {
-        require(it.mkdirs() || it.exists()) { "could not create config output directory"}
+        require(it.mkdirs() || it.exists()) { "could not create config output directory" }
     }
 }
 

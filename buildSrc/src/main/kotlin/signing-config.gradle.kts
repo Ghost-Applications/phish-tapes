@@ -6,29 +6,29 @@
  */
 
 loadPropertyIntoExtra(
-        extraKey = "keystorePassword",
-        projectPropertyKey = "keystorePassword",
-        systemPropertyKey = "KEYSTORE_PASSWORD",
-        defaultValue = "android"
+    extraKey = "keystorePassword",
+    projectPropertyKey = "keystorePassword",
+    systemPropertyKey = "KEYSTORE_PASSWORD",
+    defaultValue = "android"
 )
 
 loadPropertyIntoExtra(
-        extraKey = "aliasKeyPassword",
-        projectPropertyKey = "aliasKeyPassword",
-        systemPropertyKey = "KEY_PASSWORD",
-        defaultValue = "android"
+    extraKey = "aliasKeyPassword",
+    projectPropertyKey = "aliasKeyPassword",
+    systemPropertyKey = "KEY_PASSWORD",
+    defaultValue = "android"
 )
 
 loadPropertyIntoExtra(
-        extraKey = "storeKeyAlias",
-        projectPropertyKey = "storeKeyAlias",
-        systemPropertyKey = "KEY_ALIAS",
-        defaultValue = "androiddebugkey"
+    extraKey = "storeKeyAlias",
+    projectPropertyKey = "storeKeyAlias",
+    systemPropertyKey = "KEY_ALIAS",
+    defaultValue = "androiddebugkey"
 )
 
 loadPropertyIntoExtra(
-        extraKey = "keystoreLocation",
-        projectPropertyKey = "keystoreLocation",
-        systemPropertyKey = "KEYSTORE_LOCATION",
-        defaultValue = "keys/debug.keystore"
+    extraKey = "keystoreLocation",
+    projectPropertyKey = "keystoreLocation",
+    systemPropertyKey = "KEYSTORE_LOCATION",
+    defaultValue = "keys/debug.keystore"
 )

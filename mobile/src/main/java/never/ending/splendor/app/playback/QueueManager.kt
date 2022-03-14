@@ -32,13 +32,13 @@ class QueueManager(
     private var currentIndex: Int = 0
 
     private var currentIndexWithMetaDataListener: Int
-    get() = currentIndex
+        get() = currentIndex
         set(value) {
-        if (value >= 0 && value < playingQueue.size) {
-            currentIndex = value
-            metadataUpdateListener.onCurrentQueueIndexUpdated(currentIndex)
+            if (value >= 0 && value < playingQueue.size) {
+                currentIndex = value
+                metadataUpdateListener.onCurrentQueueIndexUpdated(currentIndex)
+            }
         }
-    }
 
     private fun isSameBrowsingCategory(mediaId: String): Boolean {
         val newBrowseHierarchy = MediaIdHelper.getHierarchy(mediaId)

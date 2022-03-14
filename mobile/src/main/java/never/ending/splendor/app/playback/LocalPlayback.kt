@@ -14,8 +14,6 @@ import android.os.Build
 import android.os.PowerManager
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.text.TextUtils
-import never.ending.splendor.BuildConfig
 import never.ending.splendor.app.MusicService
 import never.ending.splendor.app.model.MusicProvider
 import never.ending.splendor.app.model.MusicProviderSource
@@ -402,7 +400,8 @@ class LocalPlayback(
             Metrics=%s
             MediaPlayer=%s
         """.trimIndent()
-        Timber.e(logError, what, extra, runCatching { mp.trackInfo }.getOrNull(),
+        Timber.e(
+            logError, what, extra, runCatching { mp.trackInfo }.getOrNull(),
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) runCatching { mp.drmInfo } else "",
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) runCatching { mp.metrics } else "",
             mp

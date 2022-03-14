@@ -1,15 +1,15 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
+    id("org.jetbrains.kotlin.android")
 
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 
     id("api-key-provider")
     id("signing-config")
     id("build-number")
 
-    id("com.github.triplet.play") version "3.4.0-agp4.2"
+    alias(libs.plugins.play.publisher)
 }
 
 play {
@@ -21,8 +21,7 @@ play {
 }
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion("29.0.3")
+    compileSdk = 31
 
     signingConfigs {
         val keystoreLocation: String by project
@@ -30,7 +29,7 @@ android {
         val storeKeyAlias: String by project
         val aliasKeyPassword: String by project
 
-        val debug by getting {
+        getByName("debug") {
             storeFile = rootProject.file("keys/debug.keystore")
             storePassword = "android"
             keyAlias = "androiddebugkey"
@@ -48,7 +47,7 @@ android {
         val buildNumber: String by project
         applicationId = "never.ending.splendor"
         minSdkVersion(23)
-        targetSdkVersion(30)
+        targetSdkVersion(31)
         versionCode = buildNumber.toInt()
         versionName = "Carini"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -74,52 +73,47 @@ android {
         }
     }
 
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.get()
+    }
+
     testOptions.unitTests.isReturnDefaultValues = true
     buildFeatures.viewBinding = true
 }
 
 dependencies {
-    implementation(project(":networking"))
-
+    implementation(projects.networking)
     implementation(kotlin("stdlib"))
-    implementation("androidx.core:core-ktx:1.5.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
 
-    implementation("com.google.android.gms:play-services-cast:20.0.0")
-    implementation("com.google.android.libraries.cast.companionlibrary:ccl:2.9.1")
-    implementation("com.google.android.material:material:1.3.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.coroutines.android)
 
-    implementation(platform("com.google.firebase:firebase-bom:26.5.0"))
+    implementation(libs.play.services.cast)
+    implementation(libs.play.services.cast.companion)
+    implementation(libs.android.material)
+
+    implementation(platform("com.google.firebase:firebase-bom:${libs.versions.firebase.get()}"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
 
-    implementation("androidx.appcompat:appcompat:1.3.0")
-    implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.mediarouter:mediarouter:1.2.4")
-    implementation("androidx.media2:media2-session:1.1.3")
-    implementation("androidx.media2:media2-widget:1.1.3")
-    implementation("androidx.media2:media2-player:1.1.3")
+    implementation(libs.bundles.androidx)
+    implementation(libs.bundles.compose)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation(libs.kodein)
+    implementation(libs.kodein.android)
 
-    implementation("org.kodein.di:kodein-di:7.6.0")
-    implementation("org.kodein.di:kodein-di-framework-android-x:7.6.0")
+    implementation(libs.picasso)
+    implementation(libs.okhttp.logging.interceptor)
 
-    implementation("com.squareup.picasso:picasso:2.71828")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
+    implementation(libs.timber)
 
-    implementation("com.jakewharton.timber:timber:4.7.1")
+    debugImplementation(libs.bundles.android.debug.libs)
 
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
-    debugImplementation("com.facebook.flipper:flipper-leakcanary2-plugin:0.95.0")
-    debugImplementation("com.facebook.flipper:flipper:0.95.0")
-    debugImplementation("com.facebook.soloader:soloader:0.10.1")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.95.0")
+    releaseImplementation(libs.bundles.android.release.libs)
 
-    releaseImplementation("com.facebook.flipper:flipper-noop:0.95.0")
-
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("org.mockito:mockito-core:3.11.1")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+    testImplementation(libs.bundles.android.test.libs)
 }

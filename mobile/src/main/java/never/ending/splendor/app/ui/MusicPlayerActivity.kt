@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.provider.MediaStore
 import android.support.v4.media.MediaBrowserCompat
-import android.text.TextUtils
 import never.ending.splendor.R
 import never.ending.splendor.app.ui.MediaBrowserFragment.MediaFragmentListener
 import never.ending.splendor.app.utils.MediaIdHelper
