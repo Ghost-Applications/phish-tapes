@@ -34,7 +34,7 @@ jobs:
           NEVER_ENDING_SPLENDOR_PHISHIN_API_KEY: ${{ secrets.NEVER_ENDING_SPLENDOR_PHISHIN_API_KEY }}
           NEVER_ENDING_SPLENDOR_PHISH_NET_API_KEY: ${{ secrets.NEVER_ENDING_SPLENDOR_PHISH_NET_API_KEY }}
         run: >
-          ./gradlew build publishRelease --no-daemon
+          ./gradlew build publishReleaseBundle --no-daemon
           -DNEVER_ENDING_SPLENDOR_ACCEPT_BUILD_SCAN_AGREEMENT=yes
           -Dorg.gradle.jvmargs="-Xmx4G -Xms1G -XX:+AggressiveOpts -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
           -Pnever.ending.splendor.buildNumber=$GITHUB_RUN_ID
