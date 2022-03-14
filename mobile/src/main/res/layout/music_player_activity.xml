@@ -23,7 +23,7 @@
         android:layout_alignParentBottom="true"
         app:cardElevation="8dp">
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_playback_controls"
             android:name="never.ending.splendor.app.ui.PlaybackControlsFragment"
             android:layout_width="match_parent"

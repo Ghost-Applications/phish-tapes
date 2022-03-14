@@ -53,34 +53,34 @@ class MediaNotificationManager(
         musicService,
         REQUEST_CODE,
         Intent(ACTION_PAUSE).setPackage(musicService.packageName),
-        PendingIntent.FLAG_CANCEL_CURRENT
+        PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
 
     private val playIntent = PendingIntent.getBroadcast(
         musicService,
         REQUEST_CODE,
         Intent(ACTION_PLAY).setPackage(musicService.packageName),
-        PendingIntent.FLAG_CANCEL_CURRENT
+        PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
 
     private val previousIntent = PendingIntent.getBroadcast(
         musicService,
         REQUEST_CODE,
         Intent(ACTION_PREV).setPackage(musicService.packageName),
-        PendingIntent.FLAG_CANCEL_CURRENT
+        PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
 
     private val nextIntent = PendingIntent.getBroadcast(
         musicService,
         REQUEST_CODE,
         Intent(ACTION_NEXT).setPackage(musicService.packageName),
-        PendingIntent.FLAG_CANCEL_CURRENT
+        PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
     private val stopCastIntent = PendingIntent.getBroadcast(
         musicService,
         REQUEST_CODE,
         Intent(ACTION_STOP_CASTING).setPackage(musicService.packageName),
-        PendingIntent.FLAG_CANCEL_CURRENT
+        PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
 
     private val notificationColor: Int = ContextCompat.getColor(musicService, R.color.primaryColor)
@@ -194,7 +194,7 @@ class MediaNotificationManager(
         }
         return PendingIntent.getActivity(
             musicService, REQUEST_CODE, openUI,
-            PendingIntent.FLAG_CANCEL_CURRENT
+            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 

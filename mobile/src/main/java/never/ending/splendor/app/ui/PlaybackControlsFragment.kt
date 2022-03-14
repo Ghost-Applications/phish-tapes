@@ -164,6 +164,7 @@ class PlaybackControlsFragment : Fragment(), DIAware {
                 Timber.e("error playbackstate: %s", state.errorMessage)
                 Toast.makeText(activity, state.errorMessage, Toast.LENGTH_LONG).show()
             }
+            else -> Unit
         }
         if (enablePlay) {
             binding.playPause.setImageDrawable(

@@ -72,16 +72,20 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
-
-    buildFeatures {
-        compose = true
-    }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
-
     testOptions.unitTests.isReturnDefaultValues = true
-    buildFeatures.viewBinding = true
+    buildFeatures {
+        viewBinding = true
+        aidl = false
+        buildConfig = false
+        compose = true
+        prefab = false
+        renderScript = false
+        resValues = false
+        shaders = false
+    }
 }
 
 dependencies {
