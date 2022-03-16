@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">Never Ending Splendor</string>
     <string name="app_label">Never Ending Splendor (Phish.in)</string>
     <string name="favorite">Favorite</string>
     <string name="error_no_metadata">Unable to retrieve metadata.</string>
-    <string name="browse_years_subtitle">Shows by year</string>
     <string name="browse_musics_by_genre_subtitle">%1$s</string>
     <string name="random_queue_title">Random music</string>
-    <string name="error_no_connection">Cannot connect to server. Please, check your Internet connectivity.</string>
     <string name="error_loading_media">Error Loading Media</string>
     <string name="casting_to_device">Casting to %1$s</string>
     <string name="currently_playing_song">Song currently playing</string>
@@ -21,23 +19,9 @@
     <string name="touch_to_cast">Touch to connect to a Google Cast device</string>
     <!-- Use the default receiver. To customize a styled media receiver, you can use
          the css and images under <project-root>/docs/cast_styled_receiver -->
-    <string name="cast_application_id">CC1AD845</string>
-    <string name="home_title">Home</string>
-    <string name="related_content_header">You may also like</string>
-    <string name="action_listen">Listen</string>
-    <string name="open_content_drawer">Open the main menu</string>
-    <string name="close_content_drawer">Close the main menu</string>
-    <string name="placeholder_message">Coming Soon</string>
-    <string name="downloads_message">Select a show and use the Menu to download</string>
-    <string name="drawer_allmusic_title">Years</string>
-    <string name="drawer_playlists_title">Playlists</string>
-    <string name="now_playing">Now Playing</string>
+    <string name="cast_application_id" tools:ignore="Typos">CC1AD845</string>
     <string name="background_image_str">Background image for album art</string>
     <string name="search_queue_title">Search results</string>
-    <string name="no_search_results">No search results.</string>
     <string name="loading">Loading…</string>
     <string name="media_route_menu_title">Play on…</string>
-    <string name="about">About</string>
-    <string name="downloads">Downloads</string>
-    <string name="menu">Menu</string>
 </resources>
