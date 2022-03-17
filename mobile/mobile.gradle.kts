@@ -46,8 +46,8 @@ android {
     defaultConfig {
         val buildNumber: String by project
         applicationId = "never.ending.splendor"
-        minSdkVersion(23)
-        targetSdkVersion(31)
+        minSdk = 23
+        targetSdk = 31
         versionCode = buildNumber.toInt()
         versionName = "Down with Disease"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
