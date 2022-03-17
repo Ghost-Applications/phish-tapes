@@ -129,7 +129,7 @@ class MediaBrowserFragment : Fragment(), DIAware {
                     )
                     checkForUserVisibleErrors(children.isEmpty())
                     progressBar.visibility = View.INVISIBLE
-                    (listView.adapter as? MediaBrowserAdapter)?.media = children
+                    listView.mediaAdapter?.media = children
                 } catch (t: Throwable) {
                     Timber.e(t, "Error on childrenloaded")
                 }
@@ -141,6 +141,8 @@ class MediaBrowserFragment : Fragment(), DIAware {
                 checkForUserVisibleErrors(true)
             }
         }
+
+    private val RecyclerView.mediaAdapter: MediaBrowserAdapter? get() = adapter as? MediaBrowserAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,

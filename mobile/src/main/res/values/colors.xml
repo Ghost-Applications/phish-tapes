@@ -8,11 +8,6 @@
     <color name="fullscreen_line_color">#E5FFFFFF</color>
 
     <color name="primaryColor">#0018ff</color>
-    <color name="primaryLightColor">#714cff</color>
     <color name="primaryDarkColor">#0000ca</color>
     <color name="secondaryColor">#f05156</color>
-    <color name="secondaryLightColor">#ff8483</color>
-    <color name="secondaryDarkColor">#b7132d</color>
-    <color name="primaryTextColor">#ffffff</color>
-    <color name="secondaryTextColor">#000000</color>
 </resources>
