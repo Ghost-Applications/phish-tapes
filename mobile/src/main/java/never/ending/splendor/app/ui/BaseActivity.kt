@@ -41,7 +41,7 @@ abstract class BaseActivity : ActionBarCastActivity(), MediaBrowserProvider {
         @Suppress("DEPRECATION") // deprecated in api 29.
         val taskDesc = TaskDescription(
             title.toString(),
-            BitmapFactory.decodeResource(resources, R.drawable.ic_launcher_white),
+            BitmapFactory.decodeResource(resources, R.drawable.ic_launcher),
             ContextCompat.getColor(this, R.color.primaryColor)
         )
         setTaskDescription(taskDesc)

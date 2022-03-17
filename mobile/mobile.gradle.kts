@@ -49,7 +49,7 @@ android {
         minSdkVersion(23)
         targetSdkVersion(31)
         versionCode = buildNumber.toInt()
-        versionName = "Carini"
+        versionName = "Down with Disease"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
