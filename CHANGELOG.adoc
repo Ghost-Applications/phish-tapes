@@ -1,0 +1,9 @@
+= Changelog
+
+== Down with Disease
+
+- Upgraded dependencies to latest versions
+- Updated to Android 31
+- Fixed back stack icon being the incorrect icon. Is now the same as the launcher icon.
+
+== Carini 2/12/2022
