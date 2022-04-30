@@ -17,6 +17,9 @@ Standard gradle commands.
 Add to gradle.properties with `systemProp.NEVER_ENDING_SPLENDOR_ACCEPT_BUILD_SCAN_AGREEMENT=yes`
 to enable build scans on every build.
 
+= Support The App
+
+Grab a [t-shirt here](https://www.bonfire.com/never-ending-splendor-w-text/?productType=bacf6cd6-b53d-469c-ab96-02afe5b15f71) Big thanks to the [@the.spunion](https://www.instagram.com/the.spunion/) for helping out with this.
 
 = License
 
