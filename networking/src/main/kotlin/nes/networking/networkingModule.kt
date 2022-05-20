@@ -15,7 +15,9 @@ import org.kodein.di.bindSet
 import org.kodein.di.instance
 import org.kodein.di.singleton
 import java.io.File
+import java.time.Duration
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 /**
  * Tag for networking module to provide the cache directory for http client
@@ -39,6 +41,7 @@ val networkingModule = DI.Module(name = "NetworkingModule") {
     bind<OkHttpClient>() with singleton {
         OkHttpClient.Builder()
             .cache(Cache(File(instance<File>(tag = CACHE_DIR_TAG), "http"), DISK_CACHE_SIZE.toLong()))
+            .callTimeout(3, TimeUnit.SECONDS)
             .apply { instance<Set<Interceptor>>().forEach { addInterceptor(it) } }
             .build()
     }

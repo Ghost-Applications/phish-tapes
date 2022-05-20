@@ -1,6 +1,7 @@
 package never.ending.splendor.app.utils
 
 import com.squareup.picasso.Picasso
+import timber.log.Timber
 
 class Images(private val picasso: Picasso) {
 
@@ -74,7 +75,11 @@ class Images(private val picasso: Picasso) {
     init {
         // prefetch all images
         images.forEach {
-            picasso.load(it).fetch()
+            runCatching {
+                picasso.load(it).fetch()
+            }.onFailure {
+                Timber.e(it, "Error loading an image")
+            }
         }
     }
 
