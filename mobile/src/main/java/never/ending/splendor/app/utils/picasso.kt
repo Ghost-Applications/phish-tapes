@@ -43,7 +43,7 @@ private suspend fun Picasso.loadImage(url: String, maxWidth: Int, maxHeight: Int
                     continuation.resume(bitmap)
                 }
 
-                override fun onBitmapFailed(e: Exception, errorDrawable: Drawable) {
+                override fun onBitmapFailed(e: Exception, errorDrawable: Drawable?) {
                     continuation.resumeWithException(e)
                 }
             })
@@ -52,5 +52,5 @@ private suspend fun Picasso.loadImage(url: String, maxWidth: Int, maxHeight: Int
 
 abstract class SimpleTarget : Target {
     override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
-    override fun onBitmapFailed(e: Exception, errorDrawable: Drawable) {}
+    override fun onBitmapFailed(e: Exception, errorDrawable: Drawable?) {}
 }
