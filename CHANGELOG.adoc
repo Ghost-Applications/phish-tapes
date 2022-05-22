@@ -5,5 +5,8 @@
 - Upgraded dependencies to latest versions
 - Updated to Android 31
 - Fixed back stack icon being the incorrect icon. Is now the same as the launcher icon.
+- Add 5 Seconds timeout to all network calls [#26](https://github.com/AndrewReitz/never-ending-splendor/issues/26)
+- Update to phish.net api version 5
+- Wrapped image downloading in try catch to ensure it won't crash the app if an image can't be downloaded.
 
 == Carini 2/12/2022
