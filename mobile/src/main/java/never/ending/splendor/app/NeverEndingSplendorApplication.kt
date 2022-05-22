@@ -103,4 +103,14 @@ class NeverEndingSplendorApplication : Application(), DIAware {
             )
         }
     }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        Timber.i("onLowMemory")
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        Timber.i("onTrimMemory: level=%s", level)
+    }
 }

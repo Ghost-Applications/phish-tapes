@@ -1,3 +1,5 @@
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -64,6 +66,9 @@ android {
             signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
             isShrinkResources = false
+            (this as ExtensionAware).configure<CrashlyticsExtension> {
+                mappingFileUploadEnabled = false
+            }
         }
         val release by getting {
             signingConfig = signingConfigs.getByName("release")

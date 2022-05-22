@@ -16,3 +16,5 @@
     int SDK_INT return 23..1000;
 }
 
+-keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
+-keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.
