@@ -33,11 +33,13 @@ jobs:
           NEVER_ENDING_SPLENDOR_KEY_PASSWORD: ${{ secrets.NEVER_ENDING_SPLENDOR_KEY_PASSWORD }}
           NEVER_ENDING_SPLENDOR_PHISHIN_API_KEY: ${{ secrets.NEVER_ENDING_SPLENDOR_PHISHIN_API_KEY }}
           NEVER_ENDING_SPLENDOR_PHISH_NET_API_KEY: ${{ secrets.NEVER_ENDING_SPLENDOR_PHISH_NET_API_KEY }}
+          BUILD_NUMBER: ${{ github.event.number }}
+
         run: >
           ./gradlew build publishReleaseBundle --no-daemon
           -DNEVER_ENDING_SPLENDOR_ACCEPT_BUILD_SCAN_AGREEMENT=yes
           -Dorg.gradle.jvmargs="-Xmx4G -Xms1G -XX:+AggressiveOpts -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
-          -Pnever.ending.splendor.buildNumber=$GITHUB_RUN_ID
+          -Pnever.ending.splendor.buildNumber=$(($GITHUB_RUN_NUMBER + 2000357766))
           -Pnever.ending.splendor.keystoreLocation=./keys/release.jks
           -Pnever.ending.splendor.keystorePassword=$NEVER_ENDING_SPLENDOR_KEYSTORE_PASSWORD
           -Pnever.ending.splendor.aliasKeyPassword=$NEVER_ENDING_SPLENDOR_KEY_PASSWORD

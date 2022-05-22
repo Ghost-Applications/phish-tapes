@@ -72,7 +72,7 @@ class LocalPlayback(
     override val supportsGapless: Boolean = true
 
     private fun nextMediaPlayer(): MediaPlayer {
-        Timber.d("nextMediaPlayer() currentPlayer=%s", mediaPlayer)
+        Timber.i("nextMediaPlayer() currentPlayer=%s", mediaPlayer)
         return if (mediaPlayer === mediaPlayerA) mediaPlayerB else mediaPlayerA
     }
 
@@ -80,7 +80,7 @@ class LocalPlayback(
     private val mAudioNoisyReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (AudioManager.ACTION_AUDIO_BECOMING_NOISY == intent.action) {
-                Timber.d("Headphones disconnected.")
+                Timber.i("Headphones disconnected.")
                 if (isPlaying) {
                     val i = Intent(context, MusicService::class.java)
                     i.action = MusicService.ACTION_CMD
@@ -94,7 +94,7 @@ class LocalPlayback(
     override fun start() = Unit
 
     override fun stop(notifyListeners: Boolean) {
-        Timber.d("stop notifyListeners=%s", notifyListeners)
+        Timber.i("stop notifyListeners=%s", notifyListeners)
         state = PlaybackStateCompat.STATE_STOPPED
 
         if (notifyListeners) {
@@ -120,7 +120,7 @@ class LocalPlayback(
     }
 
     override fun playNext(item: MediaSessionCompat.QueueItem): Boolean {
-        Timber.d("playNext() item=%s", item)
+        Timber.i("playNext() item=%s", item)
         val nextPlayer: MediaPlayer =
             if (mediaPlayer === mediaPlayerA) mediaPlayerB
             else mediaPlayerA
@@ -158,7 +158,7 @@ class LocalPlayback(
     }
 
     override fun play(item: MediaSessionCompat.QueueItem) {
-        Timber.d("play() item=%s", item)
+        Timber.i("play() item=%s", item)
 
         // we never call this if we're auto-queued due to gapless
         if (mediaPlayersSwapping) {
@@ -213,7 +213,7 @@ class LocalPlayback(
     }
 
     override fun pause() {
-        Timber.d("pause()")
+        Timber.i("pause()")
         if (state == PlaybackStateCompat.STATE_PLAYING) {
             // Pause media player and cancel the 'foreground service' state.
             if (mediaPlayer.isPlaying) {
@@ -230,7 +230,7 @@ class LocalPlayback(
     }
 
     override fun seekTo(position: Int) {
-        Timber.d("seekTo called with %s", position)
+        Timber.i("seekTo called with %s", position)
         if (mediaPlayer.isPlaying) {
             state = PlaybackStateCompat.STATE_BUFFERING
         }
@@ -242,7 +242,7 @@ class LocalPlayback(
      * Try to get the system audio focus.
      */
     private fun tryToGetAudioFocus() {
-        Timber.d("tryToGetAudioFocus")
+        Timber.i("tryToGetAudioFocus")
         if (audioFocus != AUDIO_FOCUSED) {
             @Suppress("DEPRECATION") // new way to do this isn't availalble until api 26.
             val result = audioManager.requestAudioFocus(
@@ -259,7 +259,7 @@ class LocalPlayback(
      * Give up the audio focus.
      */
     private fun giveUpAudioFocus() {
-        Timber.d("giveUpAudioFocus")
+        Timber.i("giveUpAudioFocus")
         if (audioFocus == AUDIO_FOCUSED) {
             @Suppress("DEPRECATION") // new api not available until api 26
             if (audioManager.abandonAudioFocus(this) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
@@ -279,7 +279,7 @@ class LocalPlayback(
      * you are sure this is the case.
      */
     private fun configMediaPlayerState() {
-        Timber.d("configMediaPlayerState. mAudioFocus=%s", audioFocus)
+        Timber.i("configMediaPlayerState. mAudioFocus=%s", audioFocus)
         if (audioFocus == AUDIO_NO_FOCUS_NO_DUCK) {
             // If we don't have audio focus and can't duck, we have to pause,
             if (state == PlaybackStateCompat.STATE_PLAYING) {
@@ -294,7 +294,7 @@ class LocalPlayback(
             // If we were playing when we lost focus, we need to resume playing.
             if (playOnFocusGain) {
                 if (!mediaPlayer.isPlaying) {
-                    Timber.d(
+                    Timber.i(
                         "configMediaPlayerState startMediaPlayer. seeking to %s ",
                         currentPosition
                     )
@@ -317,7 +317,7 @@ class LocalPlayback(
      * Implementation of [android.media.AudioManager.OnAudioFocusChangeListener]
      */
     override fun onAudioFocusChange(focusChange: Int) {
-        Timber.d("onAudioFocusChange. focusChange=%s", focusChange)
+        Timber.i("onAudioFocusChange. focusChange=%s", focusChange)
         if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
             // We have gained focus:
             audioFocus = AUDIO_FOCUSED
@@ -344,7 +344,7 @@ class LocalPlayback(
      * Called when MediaPlayer has completed a seek
      */
     override fun onSeekComplete(mp: MediaPlayer) {
-        Timber.d("onSeekComplete from MediaPlayer: %s", mp.currentPosition)
+        Timber.i("onSeekComplete from MediaPlayer: %s", mp.currentPosition)
         currentPosition = mp.currentPosition
         if (state == PlaybackStateCompat.STATE_BUFFERING) {
             mediaPlayer.start()
@@ -357,7 +357,7 @@ class LocalPlayback(
      * Called when media player is done playing current song.
      */
     override fun onCompletion(player: MediaPlayer) {
-        Timber.d("onCompletion from MediaPlayer")
+        Timber.i("onCompletion from MediaPlayer")
         // The media player finished playing the current song, so we go ahead
         // and start the next.
         if (mediaPlayersSwapping) {
@@ -376,7 +376,7 @@ class LocalPlayback(
      * Called when media player is done preparing.
      */
     override fun onPrepared(player: MediaPlayer) {
-        Timber.d("onPrepared() player=%s", player)
+        Timber.i("onPrepared() player=%s", player)
         if (mediaPlayersSwapping) {
             // when the next player is prepared, go ahead and set it as next
             mediaPlayer.setNextMediaPlayer(nextMediaPlayer())
@@ -424,7 +424,7 @@ class LocalPlayback(
      */
     private fun createMediaPlayer(player: MediaPlayer?): MediaPlayer {
         var nextPlayer = player
-        Timber.d("createMediaPlayerIfNeeded. needed? %s", nextPlayer == null)
+        Timber.i("createMediaPlayerIfNeeded. needed? %s", nextPlayer == null)
         if (nextPlayer == null) {
             nextPlayer = MediaPlayer()
 
@@ -456,7 +456,7 @@ class LocalPlayback(
      * be released or not
      */
     private fun relaxResources(releaseMediaPlayer: Boolean) {
-        Timber.d("relaxResources. releaseMediaPlayer=%s", releaseMediaPlayer)
+        Timber.i("relaxResources. releaseMediaPlayer=%s", releaseMediaPlayer)
 
         // stop and release the Media Player, if it's available
         if (releaseMediaPlayer) {
