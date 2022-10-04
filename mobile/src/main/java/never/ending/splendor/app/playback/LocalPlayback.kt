@@ -116,7 +116,7 @@ class LocalPlayback(
         get() = if (_mediaPlayer != null) mediaPlayer.currentPosition else field
 
     override fun updateLastKnownStreamPosition() {
-        currentPosition = mediaPlayer.currentPosition
+        currentPosition = if(_mediaPlayer != null) mediaPlayer.currentPosition else 0
     }
 
     override fun playNext(item: MediaSessionCompat.QueueItem): Boolean {
