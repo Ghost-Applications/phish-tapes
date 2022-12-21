@@ -161,7 +161,7 @@ class FullScreenPlayerActivity : ActionBarCastActivity(), DIAware {
         if (metadata != null) {
             val venue = metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM)
             Timber.d("venue: %s", venue)
-            val location = metadata.getString(MediaMetadataCompat.METADATA_KEY_AUTHOR)
+            val location = metadata.getString(MediaMetadataCompat.METADATA_KEY_AUTHOR) ?: "Phish"
             Timber.d("location: %s", location)
             updateMediaDescription(metadata.description, venue, location)
             updateDuration(metadata)
