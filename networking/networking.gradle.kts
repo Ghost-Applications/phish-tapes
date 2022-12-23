@@ -58,7 +58,7 @@ sourceSets {
     }
 }
 
-// setup integration tests w/ intellij/android stuido
+// setup integration tests w/ intellij/android studio
 // doing it from groovy file because the kotlin dsl is not well equipped to work with this.
 apply(from = "idea.gradle")
 

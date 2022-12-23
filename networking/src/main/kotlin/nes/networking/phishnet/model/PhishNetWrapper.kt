@@ -4,6 +4,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class PhishNetWrapper<T>(
-    val error_message: String? = null,
-    val response: PhishNetResponse<T>
+    val error_message: String = "",
+    val data: List<T>
 )
