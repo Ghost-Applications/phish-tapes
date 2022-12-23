@@ -16,7 +16,6 @@ import org.kodein.di.instance
 import org.kodein.di.singleton
 import java.io.File
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class PhishNetServiceIntegrationTest : DIAware {
@@ -39,9 +38,8 @@ class PhishNetServiceIntegrationTest : DIAware {
     @Test
     fun `request show info for 2020-02-22`() = runBlocking {
         classUnderTest.setlist("2020-02-22").run {
-            assertNull(error_message, "Error message should be null")
-            assertTrue("only one show should be returned") { response.data.size == 1 }
-            assertEquals(expected = "2020-02-22", actual = response.data[0].showdate)
+            assertEquals("", error_message, "Error message should be empty")
+            assertEquals(expected = "2020-02-22", actual = data[0].showdate)
         }
     }
 
@@ -49,8 +47,8 @@ class PhishNetServiceIntegrationTest : DIAware {
     fun `request show id for 1560881138`() = runBlocking {
         // 1560881138 is the 2020-02-22 showid
         classUnderTest.reviews("1560881138").run {
-            assertNull(error_message, "Error message should be null")
-            assertTrue(response.data.isNotEmpty())
+            assertEquals("", error_message, "Error message should be empty")
+            assertTrue(data.isNotEmpty())
         }
     }
 }

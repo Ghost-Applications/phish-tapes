@@ -1,6 +1,8 @@
-package nes.networking.phishnet
+package never.ending.splendor.networking.phishnet
 
 import com.google.common.truth.Truth.assertThat
+import nes.networking.phishnet.PhishNetApiKey
+import nes.networking.phishnet.PhishNetAuthInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.mockwebserver.MockResponse

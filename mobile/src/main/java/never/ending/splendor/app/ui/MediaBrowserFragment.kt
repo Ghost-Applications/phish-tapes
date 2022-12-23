@@ -182,9 +182,15 @@ class MediaBrowserFragment : Fragment(), DIAware {
                             // if it is use that instead.
                             val showid = data.showid
                             val header = "<h1>" + data.venue + "</h1>" +
-                                "<h2>" + data.location + "</h2>"
+                                "<h2>" + data.city + "</h2>"
 
-                            val setlistData = data.setlistdata
+                            val setlistData = data.songs.joinToString(
+                                prefix = "<ol>",
+                                postfix = "</ol>",
+                                separator = ""
+                            ) {
+                                "<li>$it</li>"
+                            }
                             val setlistnotes: String = data.setlistnotes
 
                             setlistWebview.loadData(
@@ -200,12 +206,12 @@ class MediaBrowserFragment : Fragment(), DIAware {
                                 is Success -> {
                                     val display = StringBuilder()
                                     reviewsResult.value.forEach {
-                                        val reviewSubs = it.reviewtext.replace("\n", "<br/>")
+                                        val reviewSubs = it.reviewText.replace("\n", "<br/>")
                                         display.append("<h2>")
                                             .append(it.username)
                                             .append("</h2>")
                                             .append("<h4>")
-                                            .append(it.posted_date)
+                                            .append(it.postedAt)
                                             .append("</h4>")
                                             .append(reviewSubs)
                                             .append("<br/>")
@@ -213,14 +219,26 @@ class MediaBrowserFragment : Fragment(), DIAware {
 
                                     reviewsWebview.loadData(display.toString(), "text/html", null)
                                 }
-                                is Failure -> reviewsWebview.loadData(
-                                    "<div>Error loading Reviews</div>",
-                                    "text/html",
-                                    null
-                                )
+                                is Failure -> {
+                                    Timber.e(
+                                        reviewsResult.reason.cause,
+                                        "Error loading reviews: %s",
+                                        reviewsResult.reason.message
+                                    )
+                                    reviewsWebview.loadData(
+                                        "<div>Error loading Reviews</div>",
+                                        "text/html",
+                                        null
+                                    )
+                                }
                             }
                         }
                         is Failure -> {
+                            Timber.e(
+                                setlistResult.reason.cause,
+                                "Error loading setlist: %s",
+                                setlistResult.reason.message
+                            )
                             setlistWebview.loadData(
                                 "<div>Error loading Setlist</div>",
                                 "text/html",
@@ -243,11 +261,18 @@ class MediaBrowserFragment : Fragment(), DIAware {
                             val notesSubs = tapernotes.replace("\n".toRegex(), "<br/>")
                             tapernotesWebview.loadData(notesSubs, "text/html", null)
                         }
-                        is Failure -> tapernotesWebview.loadData(
-                            "<div>Error loading Taper Notes</div>",
-                            "text/html",
-                            null
-                        )
+                        is Failure -> {
+                            Timber.e(
+                                showResult.reason.cause,
+                                "Error loading show: %s",
+                                showResult.reason.message
+                            )
+                            tapernotesWebview.loadData(
+                                "<div>Error loading Taper Notes</div>",
+                                "text/html",
+                                null
+                            )
+                        }
                     }
                 }
             }

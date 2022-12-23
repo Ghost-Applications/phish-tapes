@@ -5,6 +5,9 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import nes.networking.networkingModule
+import never.ending.splendor.networking.phishin.model.showJson
+import never.ending.splendor.networking.phishin.model.showsJson
+import never.ending.splendor.networking.phishin.model.yearsJson
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.instance

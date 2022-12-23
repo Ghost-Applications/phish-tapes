@@ -11,6 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 const val PHISH_NET_RETROFIT_TAG = "phish.net"
+const val PHISH_NET_URL_TAG = PHISH_NET_RETROFIT_TAG
 
 private val PHISH_NET_API_URL: HttpUrl = requireNotNull("https://api.phish.net/v5/".toHttpUrlOrNull())
 
@@ -28,7 +29,7 @@ val phishNetModule = DI.Module(name = "PhishNetModule") {
                     .build()
             )
             .addConverterFactory(MoshiConverterFactory.create(instance()))
-            .baseUrl(PHISH_NET_API_URL)
+            .baseUrl(instance<HttpUrl>(PHISH_NET_URL_TAG))
             .build()
     }
 
@@ -39,4 +40,6 @@ val phishNetModule = DI.Module(name = "PhishNetModule") {
     bind<PhishNetRepository>() with singleton {
         PhishNetRepository(instance())
     }
+
+    bind<HttpUrl>(tag = PHISH_NET_URL_TAG) with singleton { PHISH_NET_API_URL }
 }

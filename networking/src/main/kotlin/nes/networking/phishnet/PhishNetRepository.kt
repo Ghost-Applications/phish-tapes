@@ -9,10 +9,21 @@ class PhishNetRepository internal constructor(
     private val phishNetService: PhishNetService
 ) {
     suspend fun setlist(showDate: String): Result<SetList, Exception> = resultFrom {
-        phishNetService.setlist(showDate).response.data[0]
+        val data = phishNetService.setlist(showDate).data
+        val firstSong = data[0]
+        val songs = data.map { it.song }
+
+        SetList(
+            showid = firstSong.showid,
+            showdate = firstSong.showdate,
+            venue = firstSong.venue,
+            city = firstSong.city,
+            setlistnotes = firstSong.setlistnotes,
+            songs = songs
+        )
     }
 
     suspend fun reviews(showId: String): Result<List<Review>, Exception> = resultFrom {
-        phishNetService.reviews(showId).response.data
+        phishNetService.reviews(showId).data
     }
 }
