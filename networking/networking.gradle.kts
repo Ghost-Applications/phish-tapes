@@ -53,7 +53,7 @@ kotlinConfigWriter {
 
 sourceSets {
     create("integrationTest") {
-        compileClasspath += sourceSets.main.get().output + configurations.testRuntimeClasspath
+        compileClasspath += sourceSets.main.get().output.dirs + configurations.testRuntimeClasspath.get()
         runtimeClasspath += output + compileClasspath
     }
 }
