@@ -1,6 +1,5 @@
 import nes.gradle.KotlinConfigWriterExtension
 import nes.gradle.KotlinConfigWriterTask
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 
 plugins {
     kotlin("jvm")
@@ -24,7 +23,7 @@ val generateConfigTask = tasks.create<KotlinConfigWriterTask>("generateKotlinCon
 }
 
 afterEvaluate {
-    tasks.named<KotlinJvmCompile>("compileKotlin").configure {
+    tasks.named<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>("compileKotlin").configure {
         dependsOn(generateConfigTask)
     }
 }

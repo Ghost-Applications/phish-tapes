@@ -14,6 +14,10 @@ plugins {
     alias(libs.plugins.play.publisher)
 }
 
+kotlin {
+    jvmToolchain(11)
+}
+
 play {
     serviceAccountCredentials.set(
         rootProject.file(properties["never.ending.splendor.publish-key"] ?: "keys/publish-key.json")
@@ -23,7 +27,7 @@ play {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 33
 
     signingConfigs {
         val keystoreLocation: String by project
@@ -49,15 +53,15 @@ android {
         val buildNumber: String by project
         applicationId = "never.ending.splendor"
         minSdk = 23
-        targetSdk = 31
+        targetSdk = 33
         versionCode = buildNumber.toInt()
         versionName = "Down with Disease"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     buildTypes {
@@ -78,7 +82,7 @@ android {
         }
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.get()
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     testOptions.unitTests.isReturnDefaultValues = true
     buildFeatures {
