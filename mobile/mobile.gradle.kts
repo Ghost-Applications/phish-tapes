@@ -55,7 +55,7 @@ android {
         minSdk = 23
         targetSdk = 33
         versionCode = buildNumber.toInt()
-        versionName = "Down with Disease"
+        versionName = "Esther"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -73,6 +73,7 @@ android {
             (this as ExtensionAware).configure<CrashlyticsExtension> {
                 mappingFileUploadEnabled = false
             }
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
         val release by getting {
             signingConfig = signingConfigs.getByName("release")
@@ -125,7 +126,6 @@ dependencies {
     implementation(libs.timber)
 
     debugImplementation(libs.bundles.android.debug.libs)
-
     releaseImplementation(libs.bundles.android.release.libs)
 
     testImplementation(libs.bundles.android.test.libs)

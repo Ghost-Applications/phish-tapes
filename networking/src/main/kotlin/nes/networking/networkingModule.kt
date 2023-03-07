@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
  */
 const val CACHE_DIR_TAG = "CacheDir"
 
-private val DISK_CACHE_SIZE = MEGABYTES.toBytes(50).toInt()
+private val DISK_CACHE_SIZE = MEGABYTES.toBytes(100).toInt()
 
 val networkingModule = DI.Module(name = "NetworkingModule") {
 
@@ -41,7 +41,6 @@ val networkingModule = DI.Module(name = "NetworkingModule") {
     bind<OkHttpClient>() with singleton {
         OkHttpClient.Builder()
             .cache(Cache(File(instance<File>(tag = CACHE_DIR_TAG), "http"), DISK_CACHE_SIZE.toLong()))
-            .callTimeout(3, TimeUnit.SECONDS)
             .apply { instance<Set<Interceptor>>().forEach { addInterceptor(it) } }
             .build()
     }
