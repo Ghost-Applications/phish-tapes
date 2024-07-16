@@ -55,7 +55,7 @@ android {
         val buildNumber: String by project
         applicationId = "never.ending.splendor"
         minSdk = 23
-        targetSdk = 33
+        targetSdk = 34
         versionCode = buildNumber.toInt()
         versionName = "Esther"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

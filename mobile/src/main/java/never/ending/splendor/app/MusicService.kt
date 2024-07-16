@@ -15,6 +15,7 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media.session.MediaButtonReceiver
 import androidx.mediarouter.media.MediaRouter
@@ -326,7 +327,7 @@ class MusicService : MediaBrowserServiceCompat(), PlaybackServiceCallback, DIAwa
                 )
             }
         }
-        registerReceiver(carConnectionReceiver, filter)
+        ContextCompat.registerReceiver(this, carConnectionReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
     }
 
     private fun unregisterCarConnectionReceiver() {
