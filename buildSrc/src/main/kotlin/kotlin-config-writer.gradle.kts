@@ -7,7 +7,7 @@ plugins {
 
 val extension = extensions.create<KotlinConfigWriterExtension>("kotlinConfigWriter")
 
-val outputDirectory = file("$buildDir/generated-configs")
+val outputDirectory = file("${layout.buildDirectory.get().asFile}/generated-configs")
 
 kotlin {
     sourceSets["main"].kotlin.srcDir(outputDirectory)
@@ -23,7 +23,10 @@ val generateConfigTask = tasks.create<KotlinConfigWriterTask>("generateKotlinCon
 }
 
 afterEvaluate {
-    tasks.named<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>("compileKotlin").configure {
+    tasks.named("compileKotlin").configure {
+        dependsOn(generateConfigTask)
+    }
+    tasks.named("kspKotlin").configure {
         dependsOn(generateConfigTask)
     }
 }

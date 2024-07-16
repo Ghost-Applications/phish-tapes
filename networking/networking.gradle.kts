@@ -3,7 +3,8 @@ plugins {
     `java-library`
 
     kotlin("jvm")
-    kotlin("kapt")
+
+    alias(libs.plugins.ksp)
 
     id("api-key-provider")
     id("kotlin-config-writer")
@@ -34,7 +35,7 @@ dependencies {
     implementation(libs.bundles.retrofit)
 
     implementation(libs.bundles.moshi)
-    kapt(libs.moshi.codegen)
+    ksp(libs.moshi.codegen)
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("reflect"))
@@ -53,26 +54,37 @@ kotlinConfigWriter {
 
 sourceSets {
     create("integrationTest") {
-        compileClasspath += sourceSets.main.get().output.dirs + configurations.testRuntimeClasspath.get()
-        runtimeClasspath += output + compileClasspath
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
     }
 }
 
-// setup integration tests w/ intellij/android studio
-// doing it from groovy file because the kotlin dsl is not well equipped to work with this.
-apply(from = "idea.gradle")
+val integrationTestImplementation by configurations.getting {
+    extendsFrom(configurations.implementation.get())
+}
+val integrationTestRuntimeOnly by configurations.getting
+configurations["integrationTestImplementation"].extendsFrom(configurations.testImplementation.get())
+configurations["integrationTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
 
-tasks.register<Test>("integrationTest") {
+val integrationTest = tasks.register<Test>("integrationTest") {
     val integrationTest by sourceSets
     description = "Runs the integration tests."
     group = "verification"
+
     testClassesDirs = integrationTest.output.classesDirs
     classpath = integrationTest.runtimeClasspath
-    mustRunAfter(tasks.named("compileKotlin").get())
-    outputs.upToDateWhen { false }
+    shouldRunAfter("test")
 
     useJUnitPlatform()
     testLogging {
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+}
+
+tasks.check { dependsOn(integrationTest) }
+
+idea {
+    module {
+        testSources.from(sourceSets["integrationTest"].allSource.srcDirs)
     }
 }
