@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.RemoteException
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
@@ -115,7 +116,12 @@ class MediaNotificationManager(
                 filter.addAction(ACTION_PLAY)
                 filter.addAction(ACTION_PREV)
                 filter.addAction(ACTION_STOP_CASTING)
-                musicService.registerReceiver(this@MediaNotificationManager, filter)
+                ContextCompat.registerReceiver(
+                    musicService,
+                    this@MediaNotificationManager,
+                    filter,
+                    ContextCompat.RECEIVER_NOT_EXPORTED
+                )
                 musicService.startForeground(NOTIFICATION_ID, notification)
                 mStarted = true
             }
