@@ -1,6 +1,5 @@
 package nes.networking.phishin.model
 
-import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.util.Date
 
@@ -11,7 +10,5 @@ data class Show(
     val venue_name: String,
     val taper_notes: String?,
     val venue: Venue,
-    val tracks: List<Track>,
-    @Json(name = "sbd")
-    val soundBoard: Boolean
+    val tracks: List<Track>
 )

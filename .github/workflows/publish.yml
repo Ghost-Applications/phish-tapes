@@ -7,17 +7,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: set up JDK 11
-        uses: actions/setup-java@v1
+      - uses: actions/checkout@v4
+      - name: set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          java-version: 11
-      - name: Cache Gradle packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
-          restore-keys: ${{ runner.os }}-gradle
+          java-version: 17
+          distribution: 'zulu'
+          cache: 'gradle'
       - name: Retrieve Key File
         env:
           NEVER_ENDING_SPLENDOR_ENCODED_KEY: ${{ secrets.NEVER_ENDING_SPLENDOR_ENCODED_KEY }}
@@ -34,11 +30,10 @@ jobs:
           NEVER_ENDING_SPLENDOR_PHISHIN_API_KEY: ${{ secrets.NEVER_ENDING_SPLENDOR_PHISHIN_API_KEY }}
           NEVER_ENDING_SPLENDOR_PHISH_NET_API_KEY: ${{ secrets.NEVER_ENDING_SPLENDOR_PHISH_NET_API_KEY }}
           BUILD_NUMBER: ${{ github.event.number }}
-
         run: >
           ./gradlew build publishReleaseBundle --no-daemon
           -DNEVER_ENDING_SPLENDOR_ACCEPT_BUILD_SCAN_AGREEMENT=yes
-          -Dorg.gradle.jvmargs="-Xmx4G -Xms1G -XX:+AggressiveOpts -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+          -Dorg.gradle.jvmargs="-Xmx4G -Xms1G -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
           -Pnever.ending.splendor.buildNumber=$(($GITHUB_RUN_NUMBER + 2000357766))
           -Pnever.ending.splendor.keystoreLocation=./keys/release.jks
           -Pnever.ending.splendor.keystorePassword=$NEVER_ENDING_SPLENDOR_KEYSTORE_PASSWORD

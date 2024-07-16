@@ -2,6 +2,7 @@ import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 
 plugins {
     id("com.android.application")
+    alias(libs.plugins.compose.compiler)
     id("org.jetbrains.kotlin.android")
 
     alias(libs.plugins.google.services)
@@ -27,7 +28,8 @@ play {
 }
 
 android {
-    compileSdk = 33
+    namespace = "never.ending.splendor"
+    compileSdk = 34
 
     signingConfigs {
         val keystoreLocation: String by project
