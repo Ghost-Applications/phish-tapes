@@ -370,7 +370,7 @@ class PlaybackManager(
         mMediaSessionCallback = MediaSessionCallback()
         _playback = playback
         playback.callback = this
-        mScheduleFuture = mExecutorService.scheduleAtFixedRate(
+        mScheduleFuture = mExecutorService.scheduleWithFixedDelay(
             { mHandler.post(mMonitorPositionTask) }, PROGRESS_UPDATE_INITIAL_INTERVAL,
             PROGRESS_UPDATE_INTERNAL, TimeUnit.MILLISECONDS
         )

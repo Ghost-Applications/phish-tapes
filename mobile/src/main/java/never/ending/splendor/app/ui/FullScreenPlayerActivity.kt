@@ -179,7 +179,7 @@ class FullScreenPlayerActivity : ActionBarCastActivity(), DIAware {
     private fun scheduleSeekbarUpdate() {
         stopSeekbarUpdate()
         if (!mExecutorService.isShutdown) {
-            mScheduleFuture = mExecutorService.scheduleAtFixedRate(
+            mScheduleFuture = mExecutorService.scheduleWithFixedDelay(
                 { mHandler.post(mUpdateProgressTask) }, PROGRESS_UPDATE_INITIAL_INTERVAL,
                 PROGRESS_UPDATE_INTERNAL, TimeUnit.MILLISECONDS
             )

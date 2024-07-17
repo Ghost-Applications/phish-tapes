@@ -27,7 +27,6 @@
         <activity
             android:name="never.ending.splendor.app.ui.MusicPlayerActivity"
             android:label="@string/app_name"
-            android:screenOrientation="fullSensor"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

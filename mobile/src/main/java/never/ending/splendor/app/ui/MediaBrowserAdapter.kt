@@ -1,5 +1,6 @@
 package never.ending.splendor.app.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.session.MediaControllerCompat
@@ -16,6 +17,7 @@ class MediaBrowserAdapter(
 ) : RecyclerView.Adapter<MediaItemViewHolder>() {
 
     var media: List<MediaBrowserCompat.MediaItem> = listOf()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value.toImmutableList()
             notifyDataSetChanged()

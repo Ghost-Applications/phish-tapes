@@ -1,5 +1,6 @@
 package never.ending.splendor.app.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
@@ -97,6 +98,7 @@ class MediaBrowserFragment : Fragment(), DIAware {
     // is being shown, the current title and description and the PlaybackState.
     private val mediaControllerCallback: MediaControllerCompat.Callback =
         object : MediaControllerCompat.Callback() {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onMetadataChanged(metadata: MediaMetadataCompat) {
                 super.onMetadataChanged(metadata)
                 Timber.d(
