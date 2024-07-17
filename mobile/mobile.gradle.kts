@@ -57,7 +57,7 @@ android {
         minSdk = 23
         targetSdk = 34
         versionCode = buildNumber.toInt()
-        versionName = "Esther"
+        versionName = "First Tube"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

@@ -1,10 +1,14 @@
 = Changelog
 
-== Esther
+== First Tube
 
-- Updated to Android 33
+== Esther 7/17/2024
+
+- Updated to Android 34
 - Increased HTTP cache size
 - Update HTTP client to have no built in time out, allowing images to load in background for as long as they need
+- Fix api change causing shows to not load
+- Update libraries to their latest versions.
 
 == Down with Disease 12/24/2022
 
