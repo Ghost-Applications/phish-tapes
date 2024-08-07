@@ -4,6 +4,7 @@ plugins {
 
     kotlin("jvm")
 
+    alias(libs.plugins.serialization)
     alias(libs.plugins.ksp)
 
     id("api-key-provider")
@@ -17,29 +18,28 @@ tasks.test {
     }
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 dependencies {
     implementation(kotlin("stdlib"))
 
-    // api to expose networkingModule.kt to consumers
-    api(libs.kodein)
-
-    // api to expose Interceptors and HttpUrl to consumers
     api(libs.okhttp)
-
     api(libs.result4k)
 
-    implementation(libs.byteunits)
-
     implementation(libs.okio)
+    api(libs.bundles.retrofit)
 
-    implementation(libs.bundles.retrofit)
+    implementation(libs.kotlinx.serialization)
 
-    implementation(libs.bundles.moshi)
-    ksp(libs.moshi.codegen)
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("reflect"))
     testImplementation(libs.bundles.network.test.libs)
+    kspTest(libs.dagger.compiler)
 }
 
 kotlinConfigWriter {
@@ -59,10 +59,10 @@ sourceSets {
     }
 }
 
-val integrationTestImplementation by configurations.getting {
+val integrationTestImplementation: Configuration by configurations.getting {
     extendsFrom(configurations.implementation.get())
 }
-val integrationTestRuntimeOnly by configurations.getting
+val integrationTestRuntimeOnly: Configuration by configurations.getting
 configurations["integrationTestImplementation"].extendsFrom(configurations.testImplementation.get())
 configurations["integrationTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
 

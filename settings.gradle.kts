@@ -13,28 +13,25 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter() // needed for ccl library TODO upgradde to latest version of chromecast libs
     }
 }
 
 plugins {
-    id("com.gradle.enterprise") version "3.8.1"
+    id("com.gradle.develocity") version "3.17.6"
 }
 
-include(":mobile", "networking")
+include(":mobile", ":networking")
 
-rootProject.name = "Never-Ending-Splendor"
+rootProject.name = "never-ending-splendor"
 
 rootProject.children.forEach {
     it.buildFileName = "${it.name}.gradle.kts"
 }
 
-gradleEnterprise {
+develocity {
     buildScan {
-        publishAlwaysIf(System.getProperty("NEVER_ENDING_SPLENDOR_ACCEPT_BUILD_SCAN_AGREEMENT") != null)
-        buildScan {
-            termsOfServiceUrl = "https://gradle.com/terms-of-service"
-            termsOfServiceAgree = System.getProperty("NEVER_ENDING_SPLENDOR_ACCEPT_BUILD_SCAN_AGREEMENT", "no")
-        }
+        publishing.onlyIf { System.getProperty("NEVER_ENDING_SPLENDOR_ACCEPT_BUILD_SCAN_AGREEMENT") != null }
+        termsOfUseUrl.set("https://gradle.com/help/legal-terms-of-use")
+        termsOfUseAgree.set(System.getProperty("NEVER_ENDING_SPLENDOR_ACCEPT_BUILD_SCAN_AGREEMENT", "no"))
     }
 }

@@ -2,9 +2,12 @@ import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 
 plugins {
     id("com.android.application")
-    alias(libs.plugins.compose.compiler)
     id("org.jetbrains.kotlin.android")
 
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
 
@@ -16,7 +19,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 }
 
 play {
@@ -28,8 +31,8 @@ play {
 }
 
 android {
-    namespace = "never.ending.splendor"
-    compileSdk = 34
+    namespace = "nes.app"
+    compileSdk = libs.versions.android.sdk.get().toInt()
 
     signingConfigs {
         val keystoreLocation: String by project
@@ -53,17 +56,17 @@ android {
 
     defaultConfig {
         val buildNumber: String by project
-        applicationId = "never.ending.splendor"
+        applicationId = "nes.app"
         minSdk = 23
-        targetSdk = 34
+        targetSdk = libs.versions.android.sdk.get().toInt()
         versionCode = buildNumber.toInt()
         versionName = "First Tube"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildTypes {
@@ -105,27 +108,36 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.serialization)
     implementation(libs.kotlinx.coroutines.android)
 
-    implementation(libs.play.services.cast)
-    implementation(libs.play.services.cast.companion)
-    implementation(libs.android.material)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.bundles.firebase)
 
-    implementation(platform("com.google.firebase:firebase-bom:${libs.versions.firebase.get()}"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.navigation)
+
+    implementation(libs.bundles.hilt)
+    ksp(libs.hilt.android.compiler)
+
+    implementation(libs.android.material)
+    implementation(libs.accompanist.systemuicontroller)
+
+    implementation(libs.bundles.media3)
+    implementation(libs.androidx.mediarouter)
 
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.compose)
-    debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.bundles.navigation)
 
-    implementation(libs.kodein)
-    implementation(libs.kodein.android)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.picasso)
+    implementation(libs.coil)
     implementation(libs.okhttp.logging.interceptor)
-
     implementation(libs.timber)
+    implementation(libs.byteunits)
 
     debugImplementation(libs.bundles.android.debug.libs)
     releaseImplementation(libs.bundles.android.release.libs)

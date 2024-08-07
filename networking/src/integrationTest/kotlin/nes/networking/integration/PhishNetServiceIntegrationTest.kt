@@ -1,39 +1,22 @@
 package nes.networking.integration
 
 import kotlinx.coroutines.runBlocking
-import nes.networking.CACHE_DIR_TAG
-import nes.networking.networkingModule
 import nes.networking.phishnet.PhishNetService
-import okhttp3.Interceptor
-import okhttp3.logging.HttpLoggingInterceptor
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.bind
-import org.kodein.di.inSet
-import org.kodein.di.instance
-import org.kodein.di.singleton
-import java.io.File
+import javax.inject.Inject
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class PhishNetServiceIntegrationTest : DIAware {
+class PhishNetServiceIntegrationTest {
 
-    @TempDir
-    lateinit var tempDir: File
+    @Inject
+    lateinit var classUnderTest: PhishNetService
 
-    override val di = DI.lazy {
-        import(networkingModule)
-
-        bind<File>(tag = CACHE_DIR_TAG) with singleton { tempDir }
-
-        bind<Interceptor>().inSet() with singleton {
-            HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
-        }
+    @BeforeEach
+    fun init() {
+        DaggerIntegrationTestComponent.create().inject(this)
     }
-
-    private val classUnderTest: PhishNetService by instance()
 
     @Test
     fun `request show info for 2020-02-22`() = runBlocking {

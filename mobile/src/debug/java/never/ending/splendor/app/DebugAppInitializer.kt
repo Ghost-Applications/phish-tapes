@@ -1,23 +1,30 @@
 package never.ending.splendor.app
 
-import android.app.Application
+import android.content.Context
 import com.facebook.flipper.android.AndroidFlipperClient
 import com.facebook.flipper.android.utils.FlipperUtils
 import com.facebook.flipper.plugins.crashreporter.CrashReporterPlugin
 import com.facebook.flipper.plugins.databases.DatabasesFlipperPlugin
 import com.facebook.flipper.plugins.inspector.DescriptorMapping
 import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
-import com.facebook.flipper.plugins.leakcanary2.FlipperLeakListener
+import com.facebook.flipper.plugins.leakcanary2.FlipperLeakEventListener
 import com.facebook.flipper.plugins.leakcanary2.LeakCanary2FlipperPlugin
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
 import com.facebook.soloader.SoLoader
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import leakcanary.LeakCanary
+import nes.app.AppInitializer
 import timber.log.Timber
+import javax.inject.Inject
 
 /** Debug specific initialization things. */
-class DebugAppInitializer(
-    private val context: Application,
+class DebugAppInitializer @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val networkFlipperPlugin: NetworkFlipperPlugin
 ) : AppInitializer {
     override fun invoke() {
@@ -26,7 +33,7 @@ class DebugAppInitializer(
         SoLoader.init(context, false)
 
         LeakCanary.config = LeakCanary.config.copy(
-            onHeapAnalyzedListener = FlipperLeakListener()
+            eventListeners = LeakCanary.config.eventListeners + FlipperLeakEventListener(),
         )
 
         if (FlipperUtils.shouldEnableFlipper(context)) {
@@ -41,3 +48,11 @@ class DebugAppInitializer(
         }
     }
 }
+
+@InstallIn(SingletonComponent::class)
+@Module
+abstract class DebugAppInitializerModule {
+    @Binds
+    abstract fun providesAppInitializer(debugAppInitializer: DebugAppInitializer): AppInitializer
+}
+
