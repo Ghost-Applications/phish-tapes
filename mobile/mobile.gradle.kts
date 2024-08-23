@@ -61,7 +61,7 @@ android {
         minSdk = 23
         targetSdk = libs.versions.android.sdk.get().toInt()
         versionCode = buildNumber.toInt()
-        versionName = "First Tube"
+        versionName = "Ghost"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
