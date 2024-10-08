@@ -1,4 +1,4 @@
-= Never Ending Splendor
+= Phish Tapes
 
 A Open Source Phish music player, utilizing the Phish.in API for streaming 
 audio.
@@ -17,11 +17,10 @@ Standard gradle commands.
 Add to gradle.properties with `systemProp.NEVER_ENDING_SPLENDOR_ACCEPT_BUILD_SCAN_AGREEMENT=yes`
 to enable build scans on every build.
 
-= License
+== License
 
 ....
-Copyright 2020 Andrew Reitz
-Copyright 2014 The Android Open Source Project, Inc.
+Copyright 2024 Andrew Reitz
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for

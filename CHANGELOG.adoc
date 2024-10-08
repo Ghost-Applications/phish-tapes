@@ -2,6 +2,8 @@
 
 == Ghost
 
+- Renamed project to Phish Tapes and moved git location.
+
 == First Tube 8/23/2024
 
 - Including Compose to develop a new better UI
