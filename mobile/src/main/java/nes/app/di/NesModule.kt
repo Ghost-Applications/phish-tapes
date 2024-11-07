@@ -15,14 +15,12 @@ import nes.app.playback.MediaPlayerContainer
 import nes.app.playback.RealMediaPlayerContainer
 import nes.app.ui.ApiErrorMessage
 import nes.networking.phishin.PhishInModule
+import nes.networking.phishin.PhishInUrl
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import java.io.File
-import javax.inject.Qualifier
 import javax.inject.Singleton
-import kotlin.annotation.AnnotationRetention.BINARY
 import kotlin.time.Duration.Companion.hours
 
 @InstallIn(SingletonComponent::class)
@@ -73,6 +71,9 @@ interface NesModule {
                     .build()
             }
         }
+
+        @Provides
+        fun providePhishInUrl() = PhishInUrl()
     }
 
     @Binds

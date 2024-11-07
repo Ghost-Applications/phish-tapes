@@ -14,8 +14,5 @@ interface TestModule {
 
         @Provides
         fun providesInterceptors(): Set<@JvmSuppressWildcards Interceptor> = emptySet()
-
-        @Provides
-        fun providePhishNetApiKey() = PhishNetApiKey(Config.PHISH_NET_API_KEY)
     }
 }

@@ -3,7 +3,7 @@ import org.gradle.kotlin.dsl.extra
 
 // namespaces for properties passed to gradle
 internal const val projectNamespace = "never.ending.splendor"
-internal const val systemNamespace = "NEVER_ENDING_SPLENDOR"
+internal const val systemNamespace = "PHISH_TAPES"
 
 /**
  * Loads properties from gradle.properties, system properties or command line.
