@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import nes.app.data.Title
 import nes.app.playback.MediaPlayerContainer
 import nes.app.ui.player.PlayerState.NoMedia
 import nes.app.util.formatedElapsedTime
@@ -46,8 +47,8 @@ class PlayerViewModel @Inject constructor(
     private val _playerState: MutableStateFlow<PlayerState> = MutableStateFlow(NoMedia)
     val playerState: StateFlow<PlayerState> = _playerState
 
-    private val _title: String? = savedStateHandle["title"]
-    val title: String? = _title?.decodeBase64()?.utf8()
+    val title: Title? = savedStateHandle.get<String>("title")
+        ?.let { Title.fromEncodedString(it) }
 
     init {
         viewModelScope.launch {
@@ -114,7 +115,7 @@ class PlayerViewModel @Inject constructor(
                     venueName = venueName,
                     artworkUri = metadata.artworkUri,
                     title = metadata.title.toString(),
-                    albumTitle = metadata.albumTitle.toString(),
+                    albumTitle = Title(metadata.albumTitle.toString()),
                     mediaId = cmi.mediaId,
                 )
             }

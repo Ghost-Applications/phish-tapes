@@ -95,6 +95,8 @@ coil = "io.coil-kt:coil-compose:2.7.0"
 arrow-core = "io.arrow-kt:arrow-core:1.2.4"
 arrow-resilience = "io.arrow-kt:arrow-resilience:1.2.4"
 
+markwon = "io.noties.markwon:core:4.6.2"
+
 [bundles]
 buildSrc = [
     "android-build-gradle",

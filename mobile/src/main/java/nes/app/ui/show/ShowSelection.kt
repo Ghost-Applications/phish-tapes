@@ -6,6 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.util.UnstableApi
+import nes.app.data.Title
 import nes.app.ui.components.CastButton
 import nes.app.ui.components.SelectionData
 import nes.app.ui.components.SelectionScreen
@@ -23,7 +24,7 @@ fun ShowSelectionScreen(
     playerViewModel: PlayerViewModel = hiltViewModel(),
     navigateUpClick: () -> Unit,
     onShowClicked: (showId: Long, venue: String) -> Unit,
-    onMiniPlayerClick: (title: String) -> Unit,
+    onMiniPlayerClick: (title: Title) -> Unit,
 ) {
     val playerState by playerViewModel.playerState.collectAsState()
     val state: LCE<List<Show>, Throwable> by viewModel.shows.collectAsState()
@@ -43,12 +44,12 @@ fun ShowSelectionScreen(
 
 @Composable
 fun ShowSelectionScreen(
-    screenTitle: String,
+    screenTitle: Title,
     state: LCE<List<Show>, Throwable>,
     playerState: PlayerState,
     navigateUpClick: () -> Unit,
     onShowClicked: (showId: Long, venue: String) -> Unit,
-    onMiniPlayerClick: (title: String) -> Unit,
+    onMiniPlayerClick: (title: Title) -> Unit,
     onPauseAction: () -> Unit,
     onPlayAction: () -> Unit,
     actions: @Composable RowScope.() -> Unit,

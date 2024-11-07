@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import nes.app.util.LCE
 import nes.app.R
+import nes.app.data.Title
 import nes.app.ui.player.MiniPlayer
 import nes.app.ui.theme.Rainbow
 import nes.app.ui.player.PlayerState
@@ -40,13 +41,13 @@ data class SelectionData(
 
 @Composable
 fun SelectionScreen(
-    title: String = stringResource(R.string.app_name),
+    title: Title = Title(stringResource(R.string.app_name)),
     state: LCE<List<SelectionData>, Any>,
     playerState: PlayerState,
     onPauseAction: () -> Unit,
     onPlayAction: () -> Unit,
     upClick: (() -> Unit)?,
-    onMiniPlayerClick: (title: String) -> Unit,
+    onMiniPlayerClick: (title: Title) -> Unit,
     actions: @Composable RowScope.() -> Unit,
 ) {
     NesScaffold(

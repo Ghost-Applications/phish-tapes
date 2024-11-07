@@ -1,6 +1,7 @@
 package nes.app.ui.show
 
 import app.cash.paparazzi.Paparazzi
+import nes.app.data.Title
 import nes.app.showContent
 import nes.app.showingPlayerState
 import nes.app.ui.PaparazziNightTest
@@ -61,7 +62,7 @@ private fun Paparazzi.snapshot(
         ShowScreen(
             state = state,
             playerState = showingPlayerState,
-            appBarTitle = "2021/08/08 Ruoff Music Center",
+            appBarTitle = Title("2021/08/08 Ruoff Music Center"),
             onMiniPlayerClick = {},
             onPauseAction = {},
             onPlayAction = {},

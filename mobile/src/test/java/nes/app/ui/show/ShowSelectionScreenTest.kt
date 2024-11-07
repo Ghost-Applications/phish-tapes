@@ -1,6 +1,7 @@
 package nes.app.ui.show
 
 import app.cash.paparazzi.Paparazzi
+import nes.app.data.Title
 import nes.app.noShowPlayerState
 import nes.app.showListContent
 import nes.app.showingPlayerState
@@ -48,7 +49,7 @@ private fun Paparazzi.snapshot(
 ) {
     snapshot {
         ShowSelectionScreen(
-            screenTitle = "2001",
+            screenTitle = Title("2001"),
             state = state,
             playerState = playerState,
             navigateUpClick = {},

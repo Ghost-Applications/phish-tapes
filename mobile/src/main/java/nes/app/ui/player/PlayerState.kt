@@ -2,6 +2,7 @@ package nes.app.ui.player
 
 import android.net.Uri
 import androidx.compose.runtime.Immutable
+import nes.app.data.Title
 
 sealed interface PlayerState {
 
@@ -19,7 +20,7 @@ sealed interface PlayerState {
         val currentPosition: Long,
         val artworkUri: Uri?,
         val title: String,
-        val albumTitle: String,
+        val albumTitle: Title,
         val mediaId: String,
     ): PlayerState
 }

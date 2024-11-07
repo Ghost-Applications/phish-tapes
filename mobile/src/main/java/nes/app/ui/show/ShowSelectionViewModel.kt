@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import nes.app.data.Title
 import nes.app.ui.ApiErrorMessage
 import nes.app.util.LCE
 import nes.app.util.retryUntilSuccessful
@@ -22,7 +23,7 @@ class ShowSelectionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    val showYear: String = checkNotNull(savedStateHandle["year"])
+    val showYear: Title = Title(checkNotNull(savedStateHandle["year"]))
 
     private val _shows: MutableStateFlow<LCE<List<Show>, Throwable>> = MutableStateFlow(LCE.Loading)
     val shows: StateFlow<LCE<List<Show>, Throwable>> = _shows
@@ -34,7 +35,7 @@ class ShowSelectionViewModel @Inject constructor(
     private fun loadShows() {
         viewModelScope.launch {
             val state = retryUntilSuccessful(
-                action = { phishinRepository.shows(showYear) },
+                action = { phishinRepository.shows(showYear.value) },
                 onErrorAfter3SecondsAction = { error ->
                     Timber.d(error, "Error retrieving shows")
                     _shows.emit(

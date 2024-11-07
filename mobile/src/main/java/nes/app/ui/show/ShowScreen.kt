@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.util.UnstableApi
 import nes.app.R
+import nes.app.data.Title
 import nes.app.ui.components.NesScaffold
 import nes.app.ui.player.PlayerViewModel
 import nes.app.ui.theme.NesTheme
@@ -58,7 +59,7 @@ fun ShowScreen(
     viewModel: ShowViewModel = hiltViewModel(),
     playerViewModel: PlayerViewModel = hiltViewModel(),
     upClick: () -> Unit,
-    onMiniPlayerClick: (title: String) -> Unit
+    onMiniPlayerClick: (title: Title) -> Unit
 ) {
     val showState by viewModel.show.collectAsState()
     val appBarTitle by viewModel.appBarTitle.collectAsState()
@@ -110,10 +111,10 @@ fun ShowScreen(
 fun ShowScreen(
     state: LCE<Show, Throwable>,
     playerState: PlayerState,
-    appBarTitle: String,
+    appBarTitle: Title,
     upClick: () -> Unit,
     onRowClick: (index: Int, isPlaying: Boolean) -> Unit,
-    onMiniPlayerClick: (title: String) -> Unit,
+    onMiniPlayerClick: (title: Title) -> Unit,
     onPauseAction: () -> Unit,
     onPlayAction: () -> Unit,
     actions: @Composable RowScope.() -> Unit,
@@ -145,7 +146,7 @@ fun ShowListWithPlayer(
     playerState: PlayerState,
     mediaLoaded: MediaLoaded,
     onRowClick: (index: Int, isPlaying: Boolean) -> Unit,
-    onMiniPlayerClick: (title: String) -> Unit,
+    onMiniPlayerClick: (title: Title) -> Unit,
     onPauseAction: () -> Unit,
     onPlayAction: () -> Unit,
 ) {
