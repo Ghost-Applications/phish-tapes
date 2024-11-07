@@ -3,6 +3,7 @@
 == Ghost
 
 - Renamed project to Phish Tapes and moved git location.
+- Added about page
 
 == First Tube 8/23/2024
 

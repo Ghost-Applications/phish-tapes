@@ -15,20 +15,11 @@ plugins {
     id("signing-config")
     id("build-number")
 
-    alias(libs.plugins.play.publisher)
     alias(libs.plugins.paparazzi)
 }
 
 kotlin {
     jvmToolchain(17)
-}
-
-play {
-    serviceAccountCredentials.set(
-        rootProject.file(properties["never.ending.splendor.publish-key"] ?: "keys/publish-key.json")
-    )
-    track.set("internal")
-    defaultToAppBundles.set(true)
 }
 
 android {
@@ -61,7 +52,7 @@ android {
         minSdk = 23
         targetSdk = libs.versions.android.sdk.get().toInt()
         versionCode = buildNumber.toInt()
-        versionName = "Ghost"
+        versionName = properties["phish.tapes.versionName"] as String
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -93,7 +84,7 @@ android {
     }
     testOptions.unitTests.isReturnDefaultValues = true
     buildFeatures {
-        viewBinding = true
+        viewBinding = false
         aidl = false
         buildConfig = false
         compose = true
@@ -101,6 +92,11 @@ android {
         renderScript = false
         resValues = false
         shaders = false
+    }
+
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
     }
 }
 

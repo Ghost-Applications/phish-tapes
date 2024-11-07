@@ -14,6 +14,13 @@ jobs:
           java-version: 17
           distribution: 'zulu'
           cache: 'gradle'
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.6'
+          bundler-cache: true
+      - name: Setup Fastlane
+        run: bundle install
       - name: Retrieve Key File
         env:
           PHISH_TAPES_ENCODED_KEY: ${{ secrets.PHISH_TAPES_ENCODED_KEY }}
@@ -21,23 +28,14 @@ jobs:
       - name: Provide Publish Key
         env:
           PHISH_TAPES_PUBLISH_KEY: ${{ secrets.PHISH_TAPES_PUBLISH_KEY }}
-        run: echo $PHISH_TAPES_PUBLISH_KEY > ./keys/publish-key.json
-      - name: Build with Gradle
+        run: echo $PHISH_TAPES_PUBLISH_KEY > ./keys/phish-tapes-play-key.json
+      - name: Build and Publish to Beta Track
         env:
           PHISH_TAPES_KEYSTORE_PASSWORD: ${{ secrets.PHISH_TAPES_KEYSTORE_PASSWORD }}
           PHISH_TAPES_KEY_ALIAS: ${{ secrets.PHISH_TAPES_KEY_ALIAS }}
           PHISH_TAPES_KEY_PASSWORD: ${{ secrets.PHISH_TAPES_KEY_PASSWORD }}
           PHISH_TAPES_PHISHIN_API_KEY: ${{ secrets.PHISH_TAPES_PHISHIN_API_KEY }}
           PHISH_TAPES_PHISH_NET_API_KEY: ${{ secrets.PHISH_TAPES_PHISH_NET_API_KEY }}
-          BUILD_NUMBER: ${{ github.event.number }}
-        run: >
-          ./gradlew build publishReleaseBundle --no-daemon
-          -DPHISH_TAPES_ACCEPT_BUILD_SCAN_AGREEMENT=yes
-          -Dorg.gradle.jvmargs="-Xmx4G -Xms1G -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
-          -Pnever.ending.splendor.buildNumber=$(($GITHUB_RUN_NUMBER + 2000357766))
-          -Pnever.ending.splendor.keystoreLocation=./keys/release.jks
-          -Pnever.ending.splendor.keystorePassword=$PHISH_TAPES_KEYSTORE_PASSWORD
-          -Pnever.ending.splendor.aliasKeyPassword=$PHISH_TAPES_KEY_PASSWORD
-          -Pnever.ending.splendor.storeKeyAlias=$PHISH_TAPES_KEY_ALIAS
-          -Pnever.ending.splendor.phishinApiKey=$PHISH_TAPES_PHISHIN_API_KEY
-          -Pnever.ending.splendor.phishNetApiKey=$PHISH_TAPES_PHISH_NET_API_KEY
+          PHISH_TAPES_BUILD_NUMBER: $(($GITHUB_RUN_NUMBER + 2000357766))
+          PHISH_TAPES_ACCEPT_BUILD_SCAN_AGREEMENT: yes
+        run: bundle exe fastlane beta

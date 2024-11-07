@@ -21,5 +21,5 @@ jobs:
       run: >
         ./gradlew build --no-daemon -DPHISH_TAPES_ACCEPT_BUILD_SCAN_AGREEMENT=yes
         -Dorg.gradle.jvmargs="-Xmx4G -Xms1G -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
-        -Pnever.ending.splendor.phishinApiKey=$PHISH_TAPES_PHISHIN_API_KEY
-        -Pnever.ending.splendor.phishNetApiKey=$PHISH_TAPES_PHISH_NET_API_KEY
+        -Pphish.tapes.phishinApiKey=$PHISH_TAPES_PHISHIN_API_KEY
+        -Pphish.tapes.phishNetApiKey=$PHISH_TAPES_PHISH_NET_API_KEY
