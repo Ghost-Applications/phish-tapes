@@ -1,20 +1,20 @@
 package nes.networking.phishin
 
+import Config
 import dagger.Module
 import dagger.Provides
 import kotlinx.serialization.json.Json
 import nes.networking.NetworkingModule
-import nes.networking.NetworkingModule.Companion.PHISHIN_API_URL
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Qualifier
 import javax.inject.Singleton
-import kotlin.annotation.AnnotationRetention.BINARY
+import kotlin.annotation.AnnotationRetention.RUNTIME
 
 @Qualifier
-@Retention(BINARY)
+@Retention(RUNTIME)
 annotation class PhishIn
 
 @Module(includes = [NetworkingModule::class])
@@ -34,6 +34,7 @@ interface PhishInModule {
         @Provides
         @PhishIn
         fun providesPhishInRetrofit(
+            url: PhishInUrl,
             okHttpClient: OkHttpClient,
             json: Json,
             phishInApiKey: PhishinApiKey
@@ -47,7 +48,7 @@ interface PhishInModule {
             .addConverterFactory(
                 json.asConverterFactory("application/json; charset=UTF8".toMediaType())
             )
-            .baseUrl(PHISHIN_API_URL)
+            .baseUrl(url.httpUrl)
             .build()
 
         @Singleton

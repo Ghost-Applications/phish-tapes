@@ -1,13 +1,12 @@
 package nes.networking.integration
 
-import Config
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
-import nes.networking.NetworkingModule
 import nes.networking.phishin.PhishInModule
-import nes.networking.phishnet.PhishNetApiKey
+import nes.networking.phishin.PhishInUrl
 import nes.networking.phishnet.PhishNetModule
+import nes.networking.phishnet.PhishNetUrl
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,6 +14,13 @@ import okhttp3.logging.HttpLoggingInterceptor
 @Module(includes = [PhishNetModule::class, PhishInModule::class])
 interface IntegrationTestModule {
     companion object {
+
+        @Provides
+        fun providePhishNetUrl(): PhishNetUrl = PhishNetUrl()
+
+        @Provides
+        fun providePhishInUrl(): PhishInUrl = PhishInUrl()
+
         @Provides
         fun providesCache(): Cache? = null
 
@@ -24,8 +30,5 @@ interface IntegrationTestModule {
             .apply {
                 level = HttpLoggingInterceptor.Level.BODY
             }
-
-        @Provides
-        fun providePhishNetApiKey() = PhishNetApiKey(Config.PHISH_NET_API_KEY)
     }
 }
