@@ -6,6 +6,8 @@ import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import nes.app.data.Title
+import nes.app.ui.about.AboutScreen
 import nes.app.ui.player.FullPlayer
 import nes.app.ui.show.ShowScreen
 import nes.app.ui.show.ShowSelectionScreen
@@ -18,16 +20,15 @@ fun NesNavController(
     navController: NavHostController
 ) {
     NavHost(navController = navController, startDestination = Screen.YearSelection.route) {
-        val miniPlayerClicked = { title: String -> navController.navigate(
-            Screen.Player.createRoute(
-                title
-            )
-        ) }
+        val miniPlayerClicked = { title: Title ->
+            navController.navigate(Screen.Player.createRoute(title))
+        }
 
         composable(route = Screen.YearSelection.route) {
             YearSelectionScreen(
                 onMiniPlayerClick = miniPlayerClicked,
-                onYearClicked = { navController.navigate(Screen.ShowSelection.createRoute(it)) }
+                onYearClicked = { navController.navigate(Screen.ShowSelection.createRoute(it)) },
+                navigateToAboutScreen = { navController.navigate(Screen.About.route) }
             )
         }
         composable(
@@ -67,6 +68,12 @@ fun NesNavController(
                 },
                 upClick = { navController.navigateUp() },
             )
+        }
+
+        composable(Screen.About.route) {
+            AboutScreen {
+                navController.navigateUp()
+            }
         }
     }
 }

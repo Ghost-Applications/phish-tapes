@@ -3,7 +3,7 @@ package nes.app.ui
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import okio.ByteString.Companion.encodeUtf8
+import nes.app.data.Title
 
 sealed class Screen(
     val route: String,
@@ -34,6 +34,8 @@ sealed class Screen(
             navArgument("title") { type = NavType.StringType }
         )
     ) {
-        fun createRoute(title: String) = "player/${title.encodeUtf8().base64Url()}"
+        fun createRoute(title: Title) = "player/${title.encodedTitle}"
     }
+
+    data object About : Screen("about")
 }

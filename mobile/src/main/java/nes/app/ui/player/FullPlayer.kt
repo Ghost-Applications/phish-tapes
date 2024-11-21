@@ -48,6 +48,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.util.UnstableApi
 import coil.compose.AsyncImage
 import nes.app.R
+import nes.app.data.Title
 import nes.app.ui.components.CastButton
 import nes.app.ui.components.LoadingScreen
 import nes.app.ui.components.TopAppBarText
@@ -81,7 +82,7 @@ fun FullPlayer(
 @Composable
 fun FullPlayer(
     playerState: PlayerState,
-    title: String,
+    title: Title,
     navigateToShow: (showId: Long, venueName: String) -> Unit,
     upClick: () -> Unit,
     seekTo: (Long) -> Unit,

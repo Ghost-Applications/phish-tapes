@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import nes.app.data.Title
 import nes.app.playback.MediaPlayerContainer
 import nes.app.ui.ApiErrorMessage
 import nes.app.util.Images
@@ -40,8 +41,8 @@ class ShowViewModel @Inject constructor(
     private val showId: Long = checkNotNull(savedStateHandle["id"])
     private val venue: String = checkNotNull(savedStateHandle["venue"])
 
-    private val _appBarTitle: MutableStateFlow<String> = MutableStateFlow(venue)
-    val appBarTitle: StateFlow<String> = _appBarTitle
+    private val _appBarTitle: MutableStateFlow<Title> = MutableStateFlow(Title(venue))
+    val appBarTitle: StateFlow<Title> = _appBarTitle
 
     private val _show: MutableStateFlow<LCE<Show, Throwable>> = MutableStateFlow(LCE.Loading)
     val show: StateFlow<LCE<Show, Throwable>> = _show
@@ -90,7 +91,7 @@ class ShowViewModel @Inject constructor(
 
                 checkNotNull(mediaPlayerContainer.mediaPlayer).addMediaItems(items)
                 viewModelScope.launch {
-                    _appBarTitle.emit("${show.date.toAlbumFormat()} ${show.venue_name}")
+                    _appBarTitle.emit(Title("${show.date.toAlbumFormat()} ${show.venue_name}"))
                 }
 
                 show

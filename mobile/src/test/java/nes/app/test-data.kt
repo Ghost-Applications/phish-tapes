@@ -3,6 +3,7 @@ package nes.app
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import nes.app.data.Title
 import nes.app.ui.player.PlayerState
 import nes.app.util.LCE
 import nes.networking.phishin.model.Show
@@ -35,7 +36,7 @@ val showingPlayerState = PlayerState.MediaLoaded(
     showId = 1000,
     venueName = "Lake Tahoe Outdoor Arena at Harveys",
     artworkUri = "https://i.imgur.com/qhqUJWh.jpg".toUri(),
-    albumTitle = "10/10/2024 : Lake Tahoe Outdoor Arena at Harveys",
+    albumTitle = Title("10/10/2024 : Lake Tahoe Outdoor Arena at Harveys"),
     title = "Free",
     mediaId = "https://phish.in/audio/000/032/562/32562.mp3"
 )

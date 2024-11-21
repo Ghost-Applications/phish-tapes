@@ -141,6 +141,7 @@ dependencies {
     implementation(libs.byteunits)
 
     implementation(libs.bundles.arrow)
+    implementation(libs.markwon)
 
     debugImplementation(libs.bundles.android.debug.libs)
     releaseImplementation(libs.bundles.android.release.libs)

@@ -28,11 +28,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import nes.app.R
+import nes.app.data.Title
 
 @Composable
 fun MiniPlayer(
     playerState: PlayerState,
-    onClick: (title: String) -> Unit,
+    onClick: (title: Title) -> Unit,
     onPauseAction: () -> Unit,
     onPlayAction: () -> Unit,
 ) {
@@ -73,7 +74,7 @@ fun MiniPlayer(
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Text(
-                            text = playerState.albumTitle,
+                            text = playerState.albumTitle.value,
                             style = MaterialTheme.typography.bodySmall
                         )
                     }

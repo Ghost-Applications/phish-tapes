@@ -6,6 +6,7 @@ import androidx.media3.common.Player
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import nes.app.MainDispatcherRule
+import nes.app.data.Title
 import nes.app.mediaItem
 import nes.app.playback.MediaPlayerContainer
 import nes.app.stub
@@ -38,7 +39,7 @@ class PlayerViewModelTest {
         )
 
         assertThat(classUnderTest.title).isEqualTo(
-            "Alpine Valley"
+            Title("Alpine Valley")
         )
     }
 }

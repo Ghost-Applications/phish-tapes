@@ -1,6 +1,7 @@
 package nes.app.di
 
 import android.content.Context
+import android.content.res.Resources
 import coil.ImageLoader
 import com.jakewharton.byteunits.DecimalByteUnit.MEGABYTES
 import dagger.Binds
@@ -14,6 +15,8 @@ import nes.app.R
 import nes.app.playback.MediaPlayerContainer
 import nes.app.playback.RealMediaPlayerContainer
 import nes.app.ui.ApiErrorMessage
+import nes.app.util.RealResourceManager
+import nes.app.util.ResourceManager
 import nes.networking.phishin.PhishInModule
 import nes.networking.phishin.PhishInUrl
 import okhttp3.Cache
@@ -74,8 +77,16 @@ interface NesModule {
 
         @Provides
         fun providePhishInUrl() = PhishInUrl()
+
+        @Provides
+        fun provideResources(
+            @ApplicationContext context: Context
+        ): Resources = context.resources
     }
 
     @Binds
     fun bindsMediaControllerContainer(container: RealMediaPlayerContainer): MediaPlayerContainer
+
+    @Binds
+    fun bindsResourceManager(resourceManager: RealResourceManager): ResourceManager
 }

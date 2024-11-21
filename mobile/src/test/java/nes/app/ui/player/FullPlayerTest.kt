@@ -1,6 +1,7 @@
 package nes.app.ui.player
 
 import app.cash.paparazzi.Paparazzi
+import nes.app.data.Title
 import nes.app.noShowPlayerState
 import nes.app.showingPlayerState
 import nes.app.ui.PaparazziNightTest
@@ -47,7 +48,7 @@ private fun Paparazzi.snapshot(state: PlayerState) {
     snapshot {
         FullPlayer(
             playerState = state,
-            title = "2021/08/08 Deer Creek Music Center",
+            title = Title("2021/08/08 Deer Creek Music Center"),
             navigateToShow = { _, _ -> },
             upClick = { },
             seekTo = {},
