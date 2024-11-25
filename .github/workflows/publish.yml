@@ -30,7 +30,9 @@ jobs:
           PHISH_TAPES_PUBLISH_KEY: ${{ secrets.PHISH_TAPES_PUBLISH_KEY }}
         run: echo $PHISH_TAPES_PUBLISH_KEY > ./keys/phish-tapes-play-key.json
       - name: Create Build Number
-        run: BUILD_NUMBER=$((GITHUB_RUN_NUMBER + 2000357766))
+        run: |
+          BUILD_NUMBER=$((GITHUB_RUN_NUMBER + 2000357766))
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
       - name: Build and Publish to Beta Track
         env:
           PHISH_TAPES_KEYSTORE_PASSWORD: ${{ secrets.PHISH_TAPES_KEYSTORE_PASSWORD }}
