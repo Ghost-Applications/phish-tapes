@@ -40,6 +40,7 @@ jobs:
           PHISH_TAPES_KEY_PASSWORD: ${{ secrets.PHISH_TAPES_KEY_PASSWORD }}
           PHISH_TAPES_PHISHIN_API_KEY: ${{ secrets.PHISH_TAPES_PHISHIN_API_KEY }}
           PHISH_TAPES_PHISH_NET_API_KEY: ${{ secrets.PHISH_TAPES_PHISH_NET_API_KEY }}
+          PHISH_TAPES_KEYSTORE_LOCATION: ./keys/release.jks
           PHISH_TAPES_BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
           PHISH_TAPES_ACCEPT_BUILD_SCAN_AGREEMENT: yes
         run: bundle exe fastlane beta
