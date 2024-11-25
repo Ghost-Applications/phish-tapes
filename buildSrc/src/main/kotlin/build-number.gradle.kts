@@ -3,6 +3,6 @@ val defaultBuildNumber: String = properties["phish.tapes.defaultBuildNumber"] as
 loadPropertyIntoExtra(
     extraKey = "buildNumber",
     projectPropertyKey = "buildNumber",
-    systemPropertyKey = "BUILD_NUMBER",
+    environmentPropertyKey = "BUILD_NUMBER",
     defaultValue = defaultBuildNumber
 )
