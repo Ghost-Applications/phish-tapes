@@ -5,10 +5,9 @@ platform :android do
   desc "Publish a new build to open testing on Play Store"
   lane :beta do
     gradle(
-      tasks: ['build', 'bundle'],
-      build_type: 'Release'
+      tasks: ['build', 'bundle']
     )
-    upload_to_play_store(track: 'beta')
+    upload_to_play_store(track: 'beta', skip_upload_apk: true)
   end
 
   desc "Download APK from Play Store"
@@ -83,6 +82,7 @@ platform :android do
     File.write('../CHANGELOG.adoc', updated_content)
 
     properties['phish.tapes.versionName'] = next_release_name
+    properties['phish.tapes.defaultBuildNumber'] = current_version + 1
 
     gradle_properties_lines = gradle_properties_lines.map do |line|
       # Skip comments and empty lines
