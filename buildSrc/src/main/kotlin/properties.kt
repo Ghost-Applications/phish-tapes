@@ -13,14 +13,15 @@ internal const val systemNamespace = "PHISH_TAPES"
 internal fun Project.loadPropertyIntoExtra(
     extraKey: String,
     projectPropertyKey: String,
-    systemPropertyKey: String,
+    environmentPropertyKey: String,
     defaultValue: String
 ) {
     val namespacedProjectProperty = "$projectNamespace.$projectPropertyKey"
-    val namespacedSystemProperty = "${systemNamespace}_$systemPropertyKey"
+    val namespacedSystemProperty = "${systemNamespace}_$environmentPropertyKey"
 
     extra[extraKey] = when {
         hasProperty(namespacedProjectProperty) -> properties[namespacedProjectProperty]
-        else -> System.getProperty(namespacedSystemProperty) ?: defaultValue
+        System.getenv(namespacedSystemProperty) != null -> System.getenv(namespacedSystemProperty)
+        else -> System.getProperty(namespacedProjectProperty) ?: defaultValue
     }
 }

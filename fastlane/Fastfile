@@ -2,7 +2,10 @@ default_platform(:android)
 
 platform :android do
 
-  desc "Publish a new build to open testing on Play Store"
+  desc "temp"
+
+
+  desc 'Publish a new build to open testing on Play Store'
   lane :beta do
     gradle(
       tasks: ['build', 'bundle']
@@ -10,7 +13,7 @@ platform :android do
     upload_to_play_store(track: 'beta', skip_upload_apk: true)
   end
 
-  desc "Download APK from Play Store"
+  desc 'Release app to production and create github release'
   lane :release do
     # Get the current version from Google Play
     current_version = google_play_track_version_codes(track: 'beta')[0]
