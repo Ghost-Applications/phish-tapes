@@ -2,9 +2,6 @@ default_platform(:android)
 
 platform :android do
 
-  desc "temp"
-
-
   desc 'Publish a new build to open testing on Play Store'
   lane :beta do
     gradle(
