@@ -4,6 +4,8 @@
 
 - Renamed project to Phish Tapes and moved git location.
 - Added about page
+- Fix first loading freeze on Android Auto
+- Android auto shows album instead of artist, because every artist is Phish
 
 == First Tube 8/23/2024
 

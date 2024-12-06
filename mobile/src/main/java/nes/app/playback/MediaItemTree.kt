@@ -47,7 +47,7 @@ class MediaItemTree @Inject constructor(
     private val shows: MutableMap<String, MediaItemNode> = mutableMapOf()
     private val tracks: MutableMap<String, MediaItemNode> = mutableMapOf()
 
-    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     private val root = MediaItemNode(
         MediaItem.Builder()
@@ -149,7 +149,7 @@ class MediaItemTree @Inject constructor(
                         .setMediaMetadata(
                             MediaMetadata.Builder()
                                 .setExtras(showData.toMetadataExtras())
-                                .setArtist("Phish")
+                                .setArtist(showData.showTitle)
                                 .setAlbumArtist("Phish")
                                 .setAlbumTitle(showData.showTitle)
                                 .setTitle(track.title)
