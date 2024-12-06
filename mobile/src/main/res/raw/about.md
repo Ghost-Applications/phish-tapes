@@ -27,4 +27,3 @@ Feeling generous? While we don’t accept donations directly, we encourage you t
 - [Waterwheel Foundation](https://www.waterwheelfoundation.org/)
 
 Thank you for being part of the Phish community and keeping the music alive! 🎶
-
