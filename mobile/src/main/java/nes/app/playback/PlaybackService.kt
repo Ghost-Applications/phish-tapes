@@ -45,13 +45,14 @@ class PlaybackService : MediaLibraryService(), SessionAvailabilityListener,
 
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    private var player: ReplaceableForwardingPlayer? = null
     private var mediaSession: MediaLibrarySession? = null
     private var exoPlayer: Player? = null
     private var castPlayer: Player? = null
 
-    @Inject
-    lateinit var mediaItemTree: MediaItemTree
+    @Inject lateinit var mediaItemTree: MediaItemTree
+    @Inject lateinit var replaceableForwardingPlayer: ReplaceableForwardingPlayerFactory
+
+    lateinit var player: ReplaceableForwardingPlayer
 
     @OptIn(UnstableApi::class)
     override fun onCreate() {
@@ -79,7 +80,7 @@ class PlaybackService : MediaLibraryService(), SessionAvailabilityListener,
             setSessionAvailabilityListener(this@PlaybackService)
         }
 
-        val player = ReplaceableForwardingPlayer(exoPlayer)
+        val player = replaceableForwardingPlayer.create(exoPlayer)
         val pendingIntent = PendingIntent.getActivity(
             this,
             1337,
@@ -138,9 +139,9 @@ class PlaybackService : MediaLibraryService(), SessionAvailabilityListener,
     ): ListenableFuture<MediaItemsWithStartPosition> {
         return serviceScope.future(Dispatchers.Main) {
             MediaItemsWithStartPosition(
-                player?.playlist ?: emptyList(),
-                player?.currentPlaylistIndex ?: 0,
-                player?.currentPosition ?: C.TIME_UNSET
+                player.playlist,
+                player.currentPlaylistIndex,
+                player.currentPosition
             )
         }
     }

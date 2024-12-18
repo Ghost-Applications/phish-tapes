@@ -20,25 +20,56 @@ import androidx.media3.common.VideoSize
 import androidx.media3.common.text.CueGroup
 import androidx.media3.common.util.Size
 import androidx.media3.common.util.UnstableApi
-import nes.app.util.MediaItemWrapper
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import nes.app.util.MediaItemsWrapper
 import timber.log.Timber
 import kotlin.math.min
 
 @UnstableApi
-class ReplaceableForwardingPlayer(
-    private var player: Player,
+@AssistedFactory
+interface ReplaceableForwardingPlayerFactory {
+    fun create(player: Player): ReplaceableForwardingPlayer
+}
+
+@UnstableApi
+class ReplaceableForwardingPlayer @AssistedInject constructor(
+    @Assisted private var player: Player,
 ): Player {
 
-    var playlist: MutableList<MediaItem> = mutableListOf()
-        private set
-    private val externalListeners: MutableList<Listener> = mutableListOf()
+    private val _playlist: MutableList<MediaItem> = mutableListOf()
+    val playlist = _playlist
     var currentPlaylistIndex: Int = 0
         private set
 
+    private val externalListeners: MutableList<Listener> = mutableListOf()
     private val internalListener: Listener = DelegatingPlayerListener(externalListeners)
 
+    private val replaceableForwardingPlayerListener = object : Listener {
+        override fun onPositionDiscontinuity(
+            oldPosition: Player.PositionInfo,
+            newPosition: Player.PositionInfo,
+            reason: Int
+        ) = updateCurrentPlaylistIndex()
+
+        override fun onMediaItemTransition(
+            mediaItem: MediaItem?, reason: Int
+        ) = updateCurrentPlaylistIndex()
+
+        override fun onTimelineChanged(
+            timeline: Timeline, reason: Int
+        ) = updateCurrentPlaylistIndex()
+
+        fun updateCurrentPlaylistIndex() {
+            if (!player.currentTimeline.isEmpty) {
+                currentPlaylistIndex = player.currentMediaItemIndex
+            }
+        }
+    }
+
     init {
+        externalListeners.add(replaceableForwardingPlayerListener)
         player.addListener(internalListener)
     }
 
@@ -48,7 +79,7 @@ class ReplaceableForwardingPlayer(
 
         newPlayer.apply {
             playWhenReady = player.playWhenReady
-            setMediaItems(playlist, currentPlaylistIndex, contentPosition)
+            setMediaItems(_playlist, currentPlaylistIndex, contentPosition)
             prepare()
         }
 
@@ -69,8 +100,8 @@ class ReplaceableForwardingPlayer(
 
     override fun setMediaItems(mediaItems: List<MediaItem>) {
         player.setMediaItems(mediaItems)
-        playlist.clear()
-        playlist.addAll(mediaItems)
+        _playlist.clear()
+        _playlist.addAll(mediaItems)
     }
 
     override fun setMediaItems(mediaItems: List<MediaItem>, resetPosition: Boolean) {
@@ -80,8 +111,8 @@ class ReplaceableForwardingPlayer(
             resetPosition
         )
         player.setMediaItems(mediaItems, resetPosition)
-        playlist.clear()
-        playlist.addAll(mediaItems)
+        _playlist.clear()
+        _playlist.addAll(mediaItems)
     }
 
     override fun setMediaItems(
@@ -91,64 +122,64 @@ class ReplaceableForwardingPlayer(
     ) {
         currentPlaylistIndex = startIndex
         player.setMediaItems(mediaItems, startIndex, startPositionMs)
-        playlist.clear()
-        playlist.addAll(mediaItems)    }
+        _playlist.clear()
+        _playlist.addAll(mediaItems)    }
 
     override fun setMediaItem(mediaItem: MediaItem) {
         player.setMediaItem(mediaItem)
-        playlist.clear()
-        playlist.add(mediaItem)
+        _playlist.clear()
+        _playlist.add(mediaItem)
     }
 
     override fun setMediaItem(mediaItem: MediaItem, startPositionMs: Long) {
         player.setMediaItem(mediaItem, startPositionMs)
-        playlist.clear()
-        playlist.add(mediaItem)
+        _playlist.clear()
+        _playlist.add(mediaItem)
     }
 
     override fun setMediaItem(mediaItem: MediaItem, resetPosition: Boolean) {
         player.setMediaItem(mediaItem, resetPosition)
-        playlist.clear()
-        playlist.add(mediaItem)
+        _playlist.clear()
+        _playlist.add(mediaItem)
     }
 
     override fun addMediaItem(mediaItem: MediaItem) {
         player.addMediaItem(mediaItem)
-        playlist.add(mediaItem)
+        _playlist.add(mediaItem)
     }
 
     override fun addMediaItem(index: Int, mediaItem: MediaItem) {
         player.addMediaItem(index, mediaItem)
-        playlist.add(index, mediaItem)
+        _playlist.add(index, mediaItem)
     }
 
     override fun addMediaItems(mediaItems: List<MediaItem>) {
         player.addMediaItems(mediaItems)
-        playlist.addAll(mediaItems)
+        _playlist.addAll(mediaItems)
     }
 
     override fun addMediaItems(index: Int, mediaItems: MutableList<MediaItem>) {
         player.addMediaItems(index, mediaItems)
-        playlist.addAll(index, mediaItems)
+        _playlist.addAll(index, mediaItems)
     }
 
     override fun moveMediaItem(currentIndex: Int, newIndex: Int) {
         player.moveMediaItem(currentIndex, newIndex)
-        playlist.add(min(newIndex, playlist.size), playlist.removeAt(currentIndex))
+        _playlist.add(min(newIndex, _playlist.size), _playlist.removeAt(currentIndex))
     }
 
     override fun moveMediaItems(fromIndex: Int, toIndex: Int, newIndex: Int) {
         val removedItems: ArrayDeque<MediaItem> = ArrayDeque()
         val removedItemsLength = toIndex - fromIndex
         for (i in removedItemsLength - 1 downTo 0) {
-            removedItems.addFirst(playlist.removeAt(fromIndex + i))
+            removedItems.addFirst(_playlist.removeAt(fromIndex + i))
         }
-        playlist.addAll(min(newIndex, playlist.size), removedItems)
+        _playlist.addAll(min(newIndex, _playlist.size), removedItems)
     }
 
     override fun replaceMediaItem(index: Int, mediaItem: MediaItem) {
         player.replaceMediaItem(index, mediaItem)
-        playlist[index] = mediaItem
+        _playlist[index] = mediaItem
     }
 
     override fun replaceMediaItems(
@@ -158,26 +189,26 @@ class ReplaceableForwardingPlayer(
     ) {
         player.replaceMediaItems(fromIndex, toIndex, mediaItems)
         mediaItems.forEachIndexed { index, mediaItem ->
-            playlist[fromIndex + index] = mediaItem
+            _playlist[fromIndex + index] = mediaItem
         }
     }
 
     override fun removeMediaItem(index: Int) {
         player.removeMediaItem(index)
-        playlist.removeAt(index)
+        _playlist.removeAt(index)
     }
 
     override fun removeMediaItems(fromIndex: Int, toIndex: Int) {
         player.removeMediaItems(fromIndex, toIndex)
         val removedItemsLength = toIndex - fromIndex
         for (i in removedItemsLength - 1 downTo 0) {
-            playlist.removeAt(fromIndex + i)
+            _playlist.removeAt(fromIndex + i)
         }
     }
 
     override fun clearMediaItems() {
         player.clearMediaItems()
-        playlist.clear()
+        _playlist.clear()
         currentPlaylistIndex = 0
     }
 
@@ -278,7 +309,7 @@ class ReplaceableForwardingPlayer(
 
     override fun release() {
         player.release()
-        playlist.clear()
+        _playlist.clear()
     }
 
     override fun getCurrentTracks(): Tracks = player.currentTracks
