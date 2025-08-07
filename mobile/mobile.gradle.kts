@@ -1,5 +1,3 @@
-import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -67,9 +65,6 @@ android {
             signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
             isShrinkResources = false
-            (this as ExtensionAware).configure<CrashlyticsExtension> {
-                mappingFileUploadEnabled = false
-            }
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
         val release by getting {
@@ -149,4 +144,13 @@ dependencies {
 
 tasks.named("build") {
     dependsOn("verifyPaparazziRelease")
+}
+
+val android16LayoutLibVersion = "15.2.2"
+configurations.all {
+    resolutionStrategy.force(
+        "com.android.tools.layoutlib:layoutlib:$android16LayoutLibVersion",
+        "com.android.tools.layoutlib:layoutlib-resources:$android16LayoutLibVersion",
+        "com.android.tools.layoutlib:layoutlib-runtime:$android16LayoutLibVersion"
+    )
 }

@@ -6,13 +6,9 @@ import androidx.media3.common.MediaMetadata
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.util.UnstableApi
 import arrow.core.Either
-import arrow.core.computations.ResultEffect.bind
 import arrow.core.getOrElse
-import arrow.core.right
 import arrow.resilience.Schedule
-import arrow.resilience.retry
 import arrow.resilience.retryEither
-import arrow.resilience.retryRaise
 import com.google.common.collect.ImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred

@@ -1,26 +1,26 @@
 [versions]
-android-sdk = "35"
-kotlin = "2.0.21"
-firebase-bom = "33.6.0"
+android-sdk = "36"
+kotlin = "2.2.0"
+firebase-bom = "34.0.0"
 androidx-media2 = "1.3.0"
-flipper = "0.261.0"
-okhttp = "4.12.0"
-retrofit = "2.11.0"
-coroutines = "1.9.0"
-compose-bom = "2024.11.00"
+flipper = "0.273.0"
+okhttp = "5.1.0"
+retrofit = "3.0.0"
+coroutines = "1.10.2"
+compose-bom = "2025.07.00"
 compose-compiler = "1.5.15"
-navigation = "2.8.4"
-hilt = "2.52"
+navigation = "2.9.3"
+hilt = "2.57"
 hiltNavigationCompose = "1.2.0"
-media3 = "1.5.0"
+media3 = "1.8.0"
 
 [libraries]
-android-build-gradle = { module = "com.android.tools.build:gradle", version = "8.5.2"}
+android-build-gradle = { module = "com.android.tools.build:gradle", version = "8.11.1"}
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin"}
-kotlin-poet = { module = "com.squareup:kotlinpoet", version = "1.18.1" }
+kotlin-poet = { module = "com.squareup:kotlinpoet", version = "2.2.0" }
 java-poet = "com.squareup:javapoet:1.13.0"
 
-kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1"
+kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test",  version.ref = "coroutines" }
@@ -28,14 +28,14 @@ kotlinx-coroutines-guava = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-
 
 android-material = { module = "com.google.android.material:material", version = "1.12.0" }
 
-androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.15.0" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.0" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.16.0" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.1" }
 androidx-cardview = { module = "androidx.cardview:cardview", version = "1.0.0" }
-androidx-mediarouter = { module = "androidx.mediarouter:mediarouter", version = "1.7.0" }
+androidx-mediarouter = { module = "androidx.mediarouter:mediarouter", version = "1.8.1" }
 androidx-media2-session = { module = "androidx.media2:media2-session", version.ref = "androidx-media2" }
 androidx-media2-widget = { module = "androidx.media2:media2-widget", version.ref = "androidx-media2" }
 androidx-media2-player = { module = "androidx.media2:media2-player", version.ref = "androidx-media2" }
-androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.0" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.1" }
 androidx-compose-nav = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 
 
@@ -48,7 +48,7 @@ flipper-leakcanary = { module = "com.facebook.flipper:flipper-leakcanary2-plugin
 flipper-network-plugin = { module = "com.facebook.flipper:flipper-network-plugin", version.ref = "flipper" }
 flipper-noop = { module = "com.facebook.flipper:flipper-noop", version.ref = "flipper" }
 
-facebook-soloader = { module = "com.facebook.soloader:soloader", version = "0.11.0" }
+facebook-soloader = { module = "com.facebook.soloader:soloader", version = "0.12.1" }
 
 junit = { module = "junit:junit", version = "4.13.2"}
 truth = { module = "com.google.truth:truth", version = "1.4.4" }
@@ -56,7 +56,7 @@ truth = { module = "com.google.truth:truth", version = "1.4.4" }
 byteunits = { module = "com.jakewharton.byteunits:byteunits", version = "0.9.1" }
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.14" }
-okio = { module = "com.squareup.okio:okio", version = "3.9.1" }
+okio = { module = "com.squareup.okio:okio", version = "3.16.0" }
 
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "retrofit"}
@@ -70,11 +70,11 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-material-icons = "androidx.compose.material:material-icons-extended:1.7.5"
+androidx-material-icons = "androidx.compose.material:material-icons-extended:1.7.8"
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom"}
-firbase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+firbase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
@@ -87,13 +87,13 @@ media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3" }
 media3-common = { module = "androidx.media3:media3-common", version.ref = "media3"}
 media3-cast = { module = "androidx.media3:media3-cast", version.ref = "media3"}
 
-dagger = "com.google.dagger:dagger:2.52"
-dagger-compiler = "com.google.dagger:dagger-compiler:2.52"
+dagger = "com.google.dagger:dagger:2.57"
+dagger-compiler = "com.google.dagger:dagger-compiler:2.57"
 
 coil = "io.coil-kt:coil-compose:2.7.0"
 
-arrow-core = "io.arrow-kt:arrow-core:1.2.4"
-arrow-resilience = "io.arrow-kt:arrow-resilience:1.2.4"
+arrow-core = "io.arrow-kt:arrow-core:2.1.2"
+arrow-resilience = "io.arrow-kt:arrow-resilience:2.1.2"
 
 markwon = "io.noties.markwon:core:4.6.2"
 
@@ -182,10 +182,10 @@ arrow = [
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-version-check = { id = "com.github.ben-manes.versions", version = "0.51.0" }
-google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.2" }
-serialization = "org.jetbrains.kotlin.plugin.serialization:2.0.20"
+version-check = { id = "com.github.ben-manes.versions", version = "0.52.0" }
+google-services = { id = "com.google.gms.google-services", version = "4.4.3" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.5" }
+serialization = "org.jetbrains.kotlin.plugin.serialization:2.2.0"
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-ksp = "com.google.devtools.ksp:2.0.21-1.0.28"
-paparazzi = "app.cash.paparazzi:1.3.4"
+ksp = "com.google.devtools.ksp:2.2.0-2.0.2"
+paparazzi = "app.cash.paparazzi:2.0.0-alpha02"
