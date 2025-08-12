@@ -5,10 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: set up JDK 17
+    - name: set up JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: 17
+        java-version: 21
         distribution: 'zulu'
         cache: 'gradle'
     - name: Setup Gradle
@@ -23,3 +23,9 @@ jobs:
         -Dorg.gradle.jvmargs="-Xmx4G -Xms1G -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
         -Pphish.tapes.phishinApiKey=$PHISH_TAPES_PHISHIN_API_KEY
         -Pphish.tapes.phishNetApiKey=$PHISH_TAPES_PHISH_NET_API_KEY
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-build-artifacts
+        path: mobile/build/**
