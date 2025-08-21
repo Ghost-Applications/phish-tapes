@@ -1,0 +1,39 @@
+name: Android CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Android Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+          cache: 'gradle'
+
+      - name: Build with Gradle (using gradle/actions)
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build signed APKs and AABs (debug and release)
+        run: ./gradlew build --no-daemon
+
+      - name: Upload APK, AAB, and ASC as workflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-artifacts
+          path: |
+            build/outputs/apk/debug/*.apk
+            build/outputs/apk/debug/*.apk.asc
+            build/outputs/apk/release/*.apk
+            build/outputs/apk/release/*.apk.asc
+            build/outputs/bundle/debug/*.aab
+            build/outputs/bundle/debug/*.aab.asc
+            build/outputs/bundle/release/*.aab
+            build/outputs/bundle/release/*.aab.asc

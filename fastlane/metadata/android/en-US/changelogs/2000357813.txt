@@ -1,2 +1,0 @@
-Forked RoboPhish
-A few cosmetic changes and working on better performance and better quality.

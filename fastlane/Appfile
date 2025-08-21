@@ -1,2 +1,0 @@
-json_key_file(ENV['PHISH_TAPES_SUPPLY_KEY'] || 'keys/phish-tapes-play-key.json')
-package_name("never.ending.splendor")
