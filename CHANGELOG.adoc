@@ -1,6 +1,10 @@
 = Changelog
 
-== Harpua
+== I Am Hydrogen
+
+== Harpua 2025-08-24
+
+- Updated versions and libraries to support Android 36 (Required by play store before 8/31/2025)
 
 == Ghost 2024-12-08
 
