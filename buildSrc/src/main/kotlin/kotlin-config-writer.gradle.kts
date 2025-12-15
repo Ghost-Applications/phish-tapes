@@ -13,7 +13,7 @@ kotlin {
     sourceSets["main"].kotlin.srcDir(outputDirectory)
 }
 
-val generateConfigTask = tasks.create<KotlinConfigWriterTask>("generateKotlinConfigFile") {
+val generateConfigTask = tasks.register<KotlinConfigWriterTask>("generateKotlinConfigFile") {
     className = extension.className
     packageName = extension.packageName
     keyValuePairs = extension.keys
