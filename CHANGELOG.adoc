@@ -2,6 +2,9 @@
 
 == I Am Hydrogen
 
+- Updated to latest versions of libraries.
+- Removed some dead code and library (Flipper).
+
 == Harpua 2025-08-24
 
 - Updated versions and libraries to support Android 36 (Required by play store before 8/31/2025)

@@ -135,7 +135,6 @@ dependencies {
     implementation(libs.markwon)
 
     debugImplementation(libs.bundles.android.debug.libs)
-    releaseImplementation(libs.bundles.android.release.libs)
 
     testImplementation(libs.bundles.android.test.libs)
     testImplementation(libs.hilt.android.testing)

@@ -1,9 +1,9 @@
 package nes.networking.phishin
 
-import Config
 import dagger.Module
 import dagger.Provides
 import kotlinx.serialization.json.Json
+import nes.networking.Config
 import nes.networking.NetworkingModule
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient

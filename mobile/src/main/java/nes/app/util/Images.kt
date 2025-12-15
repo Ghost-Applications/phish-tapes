@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class Images @Inject constructor(
     private val imageLoader: ImageLoader,
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
 
     private val images = listOf(

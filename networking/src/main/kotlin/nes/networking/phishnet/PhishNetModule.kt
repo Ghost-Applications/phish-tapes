@@ -1,11 +1,10 @@
 package nes.networking.phishnet
 
-import Config
 import dagger.Module
 import dagger.Provides
 import kotlinx.serialization.json.Json
+import nes.networking.Config
 import nes.networking.NetworkingModule
-import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
