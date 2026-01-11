@@ -9,15 +9,15 @@ import kotlin.time.Duration.Companion.milliseconds
 class PhishInRepository(
     private val phishInService: PhishInService
 ) {
-    suspend fun years(): Either<Throwable, List<YearData>> = Either.catch {
+    suspend fun years(): Either<Exception, List<YearData>> = Either.catchOrThrow {
         phishInService.years().data.reversed()
     }
 
-    suspend fun shows(year: String): Either<Throwable, List<Show>> = Either.catch {
+    suspend fun shows(year: String): Either<Exception, List<Show>> = Either.catchOrThrow {
         phishInService.shows(year).data
     }
 
-    suspend fun show(showId: String): Either<Throwable, Show> = Either.catch {
+    suspend fun show(showId: String): Either<Exception, Show> = Either.catchOrThrow {
         phishInService.show(showId).data
     }
 }
