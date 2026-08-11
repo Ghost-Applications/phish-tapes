@@ -58,12 +58,12 @@ kotlinConfigWriter {
     packageName = "nes.networking"
 
     val phishNetApiKey = providers.gradleProperty("$PROJECT_NAMESPACE.phishNetApiKey")
-        .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.PHISH_NET_API_KEY"))
+        .orElse(providers.environmentVariable("${SYSTEM_NAMESPACE}_PHISH_NET_API_KEY"))
         .getOrElse("")
     put("PHISH_NET_API_KEY", phishNetApiKey)
 
     val phishinApiKey = providers.gradleProperty("$PROJECT_NAMESPACE.phishinApiKey")
-        .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.PHISHIN_API_KEY"))
+        .orElse(providers.environmentVariable("${SYSTEM_NAMESPACE}_PHISHIN_API_KEY"))
         .getOrElse("")
     put("PHISH_IN_API_KEY", phishinApiKey)
 }

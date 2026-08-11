@@ -22,20 +22,20 @@ android {
 
     signingConfigs {
         val keystoreLocation = providers.gradleProperty("$PROJECT_NAMESPACE.keystoreLocation")
-            .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.KEYSTORE_LOCATION"))
+            .orElse(providers.environmentVariable("${SYSTEM_NAMESPACE}_KEYSTORE_LOCATION"))
             .getOrElse("keys/debug.keystore")
 
         val keystorePassword = providers.gradleProperty("$PROJECT_NAMESPACE.keystorePassword")
-            .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.KEYSTORE_PASSWORD"))
+            .orElse(providers.environmentVariable("${SYSTEM_NAMESPACE}_KEYSTORE_PASSWORD"))
             .getOrElse("android")
 
         val storeKeyAlias = providers.gradleProperty("$PROJECT_NAMESPACE.storeKeyAlias")
-            .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.KEY_ALIAS"))
+            .orElse(providers.environmentVariable("${SYSTEM_NAMESPACE}_KEY_ALIAS"))
             .getOrElse("androiddebugkey")
 
 
         val aliasKeyPassword = providers.gradleProperty("$PROJECT_NAMESPACE.aliasKeyPassword")
-            .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.KEY_PASSWORD"))
+            .orElse(providers.environmentVariable("${SYSTEM_NAMESPACE}_KEY_PASSWORD"))
             .getOrElse("android")
 
         getByName("debug") {
@@ -54,7 +54,7 @@ android {
 
     defaultConfig {
         val buildNumber = providers.gradleProperty("$PROJECT_NAMESPACE.buildNumber")
-            .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.BUILD_NUMBER"))
+            .orElse(providers.environmentVariable("${SYSTEM_NAMESPACE}_BUILD_NUMBER"))
             .orElse(providers.gradleProperty("$PROJECT_NAMESPACE.defaultBuildNumber"))
             .get()
 
