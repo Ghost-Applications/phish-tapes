@@ -1,6 +1,8 @@
+import nes.gradle.BuildConstants.PROJECT_NAMESPACE
+import nes.gradle.BuildConstants.SYSTEM_NAMESPACE
+
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
 
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.serialization)
@@ -8,12 +10,6 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
-
-    id("api-key-provider")
-    id("signing-config")
-    id("build-number")
-
-    alias(libs.plugins.paparazzi)
 }
 
 kotlin {
@@ -25,10 +21,22 @@ android {
     compileSdk = libs.versions.android.sdk.get().toInt()
 
     signingConfigs {
-        val keystoreLocation: String by project
-        val keystorePassword: String by project
-        val storeKeyAlias: String by project
-        val aliasKeyPassword: String by project
+        val keystoreLocation = providers.gradleProperty("$PROJECT_NAMESPACE.keystoreLocation")
+            .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.KEYSTORE_LOCATION"))
+            .getOrElse("keys/debug.keystore")
+
+        val keystorePassword = providers.gradleProperty("$PROJECT_NAMESPACE.keystorePassword")
+            .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.KEYSTORE_PASSWORD"))
+            .getOrElse("android")
+
+        val storeKeyAlias = providers.gradleProperty("$PROJECT_NAMESPACE.storeKeyAlias")
+            .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.KEY_ALIAS"))
+            .getOrElse("androiddebugkey")
+
+
+        val aliasKeyPassword = providers.gradleProperty("$PROJECT_NAMESPACE.aliasKeyPassword")
+            .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.KEY_PASSWORD"))
+            .getOrElse("android")
 
         getByName("debug") {
             storeFile = rootProject.file("keys/debug.keystore")
@@ -45,12 +53,19 @@ android {
     }
 
     defaultConfig {
-        val buildNumber: String by project
+        val buildNumber = providers.gradleProperty("$PROJECT_NAMESPACE.buildNumber")
+            .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.BUILD_NUMBER"))
+            .orElse(providers.gradleProperty("$PROJECT_NAMESPACE.defaultBuildNumber"))
+            .get()
+
+        val versionNumber = providers.gradleProperty("$PROJECT_NAMESPACE.versionName")
+            .get()
+
         applicationId = "never.ending.splendor"
-        minSdk = 23
+        minSdk = 28
         targetSdk = libs.versions.android.sdk.get().toInt()
         versionCode = buildNumber.toInt()
-        versionName = properties["phish.tapes.versionName"] as String
+        versionName = versionNumber
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -60,22 +75,18 @@ android {
     }
 
     buildTypes {
-        val debug by getting {
+        getByName("debug") {
             applicationIdSuffix = ".debug"
             signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
-            isShrinkResources = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
-        val release by getting {
+        getByName("release") {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     testOptions.unitTests.isReturnDefaultValues = true
     buildFeatures {
@@ -84,7 +95,6 @@ android {
         buildConfig = false
         compose = true
         prefab = false
-        renderScript = false
         resValues = false
         shaders = false
     }
@@ -97,7 +107,6 @@ android {
 
 dependencies {
     implementation(projects.networking)
-    implementation(kotlin("stdlib"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.serialization)
@@ -120,8 +129,6 @@ dependencies {
     implementation(libs.androidx.mediarouter)
 
     implementation(libs.bundles.androidx)
-    implementation(libs.bundles.compose)
-    implementation(libs.bundles.navigation)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
@@ -139,10 +146,6 @@ dependencies {
     testImplementation(libs.bundles.android.test.libs)
     testImplementation(libs.hilt.android.testing)
     kspTest(libs.hilt.android.compiler)
-}
-
-tasks.named("build") {
-    dependsOn("verifyPaparazziRelease")
 }
 
 val android16LayoutLibVersion = "15.2.2"

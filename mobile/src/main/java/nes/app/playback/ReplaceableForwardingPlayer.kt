@@ -390,6 +390,13 @@ class ReplaceableForwardingPlayer @AssistedInject constructor(
     }
 
     override fun getVolume(): Float = player.volume
+    override fun mute() {
+        player.mute()
+    }
+
+    override fun unmute() {
+        player.unmute()
+    }
 
     override fun clearVideoSurface() = player.clearVideoSurface()
 
