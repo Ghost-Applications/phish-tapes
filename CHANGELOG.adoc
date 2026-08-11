@@ -2,8 +2,12 @@
 
 == I Am Hydrogen
 
-- Updated to latest versions of libraries.
-- Removed some dead code and library (Flipper).
+- Made Mini Player 8dp Larger
+- Updated to latest versions of libraries
+- Removed some dead code
+- Updated retries
+- Updated underlying libraries
+- Updated to Android 37
 
 == Harpua 2025-08-24
 

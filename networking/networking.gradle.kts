@@ -1,3 +1,6 @@
+import nes.gradle.BuildConstants.PROJECT_NAMESPACE
+import nes.gradle.BuildConstants.SYSTEM_NAMESPACE
+
 plugins {
     idea
     `java-library`
@@ -7,7 +10,6 @@ plugins {
     alias(libs.plugins.serialization)
     alias(libs.plugins.ksp)
 
-    id("api-key-provider")
     id("kotlin-config-writer")
 }
 
@@ -20,6 +22,13 @@ tasks.test {
 
 kotlin {
     jvmToolchain(21)
+}
+
+sourceSets {
+    create("integrationTest") {
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
 }
 
 dependencies {
@@ -41,34 +50,34 @@ dependencies {
     testImplementation(kotlin("reflect"))
     testImplementation(libs.bundles.network.test.libs)
     kspTest(libs.dagger.compiler)
+
+    "kspIntegrationTest"(libs.dagger.compiler)
 }
 
 kotlinConfigWriter {
     packageName = "nes.networking"
 
-    val phishNetApiKey: String by project
+    val phishNetApiKey = providers.gradleProperty("$PROJECT_NAMESPACE.phishNetApiKey")
+        .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.PHISH_NET_API_KEY"))
+        .getOrElse("")
     put("PHISH_NET_API_KEY", phishNetApiKey)
 
-    val phishinApiKey: String by project
+    val phishinApiKey = providers.gradleProperty("$PROJECT_NAMESPACE.phishinApiKey")
+        .orElse(providers.environmentVariable("$SYSTEM_NAMESPACE.PHISHIN_API_KEY"))
+        .getOrElse("")
     put("PHISH_IN_API_KEY", phishinApiKey)
 }
 
-sourceSets {
-    create("integrationTest") {
-        compileClasspath += sourceSets.main.get().output
-        runtimeClasspath += sourceSets.main.get().output
-    }
-}
-
-val integrationTestImplementation: Configuration by configurations.getting {
+configurations.getByName("integrationTestImplementation") {
     extendsFrom(configurations.implementation.get())
+    extendsFrom(configurations.testImplementation.get())
 }
-val integrationTestRuntimeOnly: Configuration by configurations.getting
-configurations["integrationTestImplementation"].extendsFrom(configurations.testImplementation.get())
-configurations["integrationTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+configurations.getByName("integrationTestRuntimeOnly") {
+    extendsFrom(configurations.runtimeOnly.get())
+}
 
 val integrationTest = tasks.register<Test>("integrationTest") {
-    val integrationTest by sourceSets
+    val integrationTest = sourceSets.getByName("integrationTest")
     description = "Runs the integration tests."
     group = "verification"
 

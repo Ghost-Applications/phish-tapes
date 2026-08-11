@@ -49,7 +49,7 @@ fun MiniPlayer(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp)
+                        .height(64.dp)
                         .shadow(2.dp)
                         .background(MaterialTheme.colorScheme.primaryContainer)
                         .clickable {
