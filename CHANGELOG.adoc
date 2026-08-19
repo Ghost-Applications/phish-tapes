@@ -1,6 +1,8 @@
 = Changelog
 
-== I Am Hydrogen
+== Julius
+
+== I Am Hydrogen 2026-08-19
 
 - Made Mini Player 8dp Larger
 - Updated to latest versions of libraries
